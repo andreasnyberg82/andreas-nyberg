@@ -478,6 +478,49 @@
       color: var(--amber);
     }
 
+    /* ───────── clients strip ───────── */
+    .clients {
+      margin-top: 56px;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 18px 0;
+    }
+    .clients-label {
+      font-size: 10.5px;
+      color: var(--ink-faint);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .clients-label::before {
+      content: "#";
+      color: var(--amber);
+      font-weight: 600;
+    }
+    .clients-list {
+      display: flex; flex-wrap: wrap;
+      gap: 6px 0;
+      align-items: center;
+      font-size: 12.5px;
+      color: var(--ink-2);
+      line-height: 1.6;
+    }
+    .clients-list .name {
+      padding: 2px 12px;
+      border-right: 1px solid var(--rule);
+      white-space: nowrap;
+    }
+    .clients-list .name:first-child { padding-left: 0; }
+    .clients-list .name:last-child { border-right: none; }
+    .clients-list .name:hover { color: var(--amber); }
+
+    @media (max-width: 640px) {
+      .clients { margin-top: 40px; padding: 16px 0; }
+      .clients-list { font-size: 13px; gap: 4px 0; }
+      .clients-list .name { padding: 3px 10px; }
+    }
+
     /* ───────── practice grid (capabilities) ───────── */
     .cap-grid {
       display: grid;
@@ -610,6 +653,30 @@
       max-width: 68ch;
     }
     .commit-desc strong { color: var(--ink); font-weight: 600; }
+    .commit-links {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 6px;
+    }
+    .commit-link {
+      font-size: 11.5px;
+      color: var(--amber);
+      padding: 6px 12px;
+      border: 1px solid var(--rule-2);
+      letter-spacing: 0.01em;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .commit-link:hover {
+      background: var(--bg-3);
+      border-color: var(--amber);
+    }
+    .commit-link.primary {
+      background: var(--amber-tint);
+      border-color: var(--amber);
+    }
+    @media (max-width: 640px) {
+      .commit-link { font-size: 12px; padding: 8px 12px; min-height: 38px; }
+    }
 
     .commit-stack {
       display: flex; flex-wrap: wrap; gap: 5px;
@@ -1180,6 +1247,20 @@
               <span class="boot-stat-sub">Atlassian Forge · live</span>
             </div>
           </div>
+
+          <!-- clients / credibility strip -->
+          <section class="clients" aria-label="Selected clients">
+            <p class="clients-label">clients shipped for</p>
+            <p class="clients-list">
+              <span class="name">Kantar Media</span>
+              <span class="name">Cancer Research UK</span>
+              <span class="name">Endeavor Streaming</span>
+              <span class="name">Zuora / Zephr</span>
+              <span class="name">ITV</span>
+              <span class="name">NBA</span>
+              <span class="name">BT</span>
+            </p>
+          </section>
         </article>
 
         <!-- ─── capabilities ─── -->
@@ -1209,8 +1290,8 @@
 
             <div class="cap">
               <span class="cap-num">03</span>
-              <span class="cap-name">AI-native delivery workflows</span>
-              <span class="cap-desc">Multi-agent build pipelines with Claude Code, Codex, and Rovo. LLM tooling integrated into architecture, QA, and shipping.</span>
+              <span class="cap-name">Accelerated delivery with structured AI workflows</span>
+              <span class="cap-desc">Shorter build cycles using AI-assisted engineering: Claude Code, Codex, and Rovo integrated into architecture, QA, and shipping. Human-led decisions, machine-assisted execution.</span>
             </div>
 
             <div class="cap">
@@ -1246,10 +1327,10 @@
             </div>
 
             <div class="pkg-row">
-              <span class="pkg-label">ai &amp; agentic</span>
+              <span class="pkg-label">ai &amp; delivery</span>
               <div class="pkg-chips">
-                <span class="chip">Multi-agent workflows</span><span class="chip">Claude Code</span><span class="chip">Codex</span>
-                <span class="chip">Rovo agent design</span><span class="chip">LLM-assisted dev</span><span class="chip">AI adoption strategy</span>
+                <span class="chip">AI-assisted engineering</span><span class="chip">Claude Code</span><span class="chip">Codex</span>
+                <span class="chip">Rovo agent design</span><span class="chip">LLM tooling</span><span class="chip">AI adoption strategy</span>
               </div>
             </div>
 
@@ -1294,17 +1375,21 @@
               </span>
               <div class="commit-body">
                 <p class="commit-title">LaunchPad for Jira Service Management</p>
-                <p class="commit-meta">Let's Talk Solutions Ltd <span class="dot">·</span> 2025 → present <span class="dot">·</span> live product</p>
+                <p class="commit-meta">Let's Talk Solutions Ltd <span class="dot">·</span> Mar 2025 – present <span class="dot">·</span> live product</p>
                 <p class="commit-desc">
                   Forge Marketplace app that deploys a working JSM service structure in minutes. <strong>13 production CMDB schemas</strong> under one subscription, an Excel import pipeline, an Automation Rule Management API, and a Rovo agent suite companion. Free for up to 10 users. Live at v2.10.
                 </p>
+                <div class="commit-links">
+                  <a class="commit-link primary" href="https://marketplace.atlassian.com/apps/1238067/launchpad-for-jsm" target="_blank" rel="noopener">View on Atlassian Marketplace <span aria-hidden="true">↗</span></a>
+                  <a class="commit-link" href="https://lt.solutions" target="_blank" rel="noopener">lt.solutions <span aria-hidden="true">↗</span></a>
+                </div>
               </div>
               <div class="commit-stack">
                 <span class="stack-chip">Forge</span>
                 <span class="stack-chip">Node.js</span>
                 <span class="stack-chip">React</span>
                 <span class="stack-chip">Marketplace</span>
-                <span class="stack-chip">Multi-agent build</span>
+                <span class="stack-chip">AI-assisted delivery</span>
               </div>
             </article>
 
@@ -1336,7 +1421,7 @@
               </span>
               <div class="commit-body">
                 <p class="commit-title">ServiceNow → JSM migration · Perceptive Informatics</p>
-                <p class="commit-meta">Valiantys <span class="dot">·</span> 2025 – 2026 <span class="dot">·</span> senior consultant</p>
+                <p class="commit-meta">Valiantys <span class="dot">·</span> Nov 2025 – Mar 2026 <span class="dot">·</span> senior consultant</p>
                 <p class="commit-desc">
                   Full platform migration off ServiceNow. Designed the Assets CMDB schema, rebuilt request workflows, implemented C-SAT and NPS reporting. Parallel engagements at <strong>Cancer Research UK</strong> (JSM and Assets implementation), <strong>System C</strong> (healthcare IT discovery, co-authored solution design), and <strong>APAX Finance</strong> (email-based support to structured JSM).
                 </p>
@@ -1357,7 +1442,7 @@
               </span>
               <div class="commit-body">
                 <p class="commit-title">ISO 27001 Confluence documentation hub</p>
-                <p class="commit-meta">Datasparq <span class="dot">·</span> 2023 – 2025 <span class="dot">·</span> internal IT &amp; data service manager</p>
+                <p class="commit-meta">Datasparq <span class="dot">·</span> Jan 2023 – Jan 2025 <span class="dot">·</span> internal IT &amp; data service manager</p>
                 <p class="commit-desc">
                   Built the <strong>ISO 27001 documentation hub</strong> in Confluence end to end. Praised by external auditors at the final certification audit. Alongside it: migrated internal support from Zendesk to JSM, and designed GCP and Atlassian cost-optimisation automations via webhooks and APIs.
                 </p>
@@ -1394,7 +1479,7 @@
                 <p class="log-role">Founder &amp; Director</p>
                 <p class="log-company">Let's Talk Solutions Ltd <span class="at">@</span> London</p>
                 <p class="log-desc">
-                  Co-founded and bootstrapped LaunchPad for JSM to v2.10.0. <strong>13 production CMDB schemas</strong>, Excel import pipeline, Automation Rule Management API. Run a multi-agent AI development workflow: Claude Code as PM and builder, Codex as QA auditor. Four-layer commercial model across product, schema extensions, playbooks, and advisory.
+                  Co-founded and bootstrapped LaunchPad for JSM to v2.10.0. <strong>13 production CMDB schemas</strong>, Excel import pipeline, Automation Rule Management API. Ship at small-team velocity using a structured AI-assisted engineering workflow (Claude Code for build, Codex for QA), with human-led architecture and review. Four-layer commercial model across product, schema extensions, playbooks, and advisory.
                 </p>
               </div>
             </div>
@@ -1530,7 +1615,7 @@
           </p>
           <h2 class="cta-title">If your <span class="italic">JSM</span> is stuck, that is the kind of week I want to have.</h2>
           <p class="cta-desc">
-            Short-term contracts, advisory days, or a discovery call. Atlassian platforms, ITSM architecture, CMDB design, AI-native delivery workflows. London-based, working with teams across the UK, EU, and remote.
+            Short-term contracts, advisory days, or a discovery call. Atlassian platforms, ITSM architecture, CMDB design, and structured AI-assisted delivery. London-based, working with teams across the UK, EU, and remote.
           </p>
           <div class="actions">
             <a href="mailto:andreas@lt.solutions?subject=Consulting%20enquiry" class="btn btn-primary">
