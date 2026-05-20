@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- dark rounded bg -->
+  <rect width="32" height="32" rx="5" fill="#18191A"/>
+  <!-- bold monospace A in orange -->
+  <text x="16" y="23" text-anchor="middle"
+        font-family="DejaVu Sans Mono, Courier New, monospace"
+        font-size="19" font-weight="bold" fill="#E8872A">A</text>
+  <!-- cursor underline bar -->
+  <rect x="8" y="26.5" width="16" height="2.5" rx="1" fill="#E8872A"/>
+</svg>

@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+
+  <!-- BACKGROUND -->
+  <rect width="1200" height="630" fill="#18191A"/>
+
+  <!-- TOP WINDOW CHROME -->
+  <rect width="1200" height="40" fill="#0E0F10"/>
+  <line x1="0" y1="40" x2="1200" y2="40" stroke="#252527" stroke-width="1"/>
+  <!-- traffic lights -->
+  <circle cx="24" cy="20" r="6" fill="#FF5F57"/>
+  <circle cx="44" cy="20" r="6" fill="#FEBC2E"/>
+  <circle cx="64" cy="20" r="6" fill="#28C840"/>
+  <!-- breadcrumb -->
+  <text x="600" y="25" text-anchor="middle"
+        font-family="DejaVu Sans Mono, Courier New, monospace"
+        font-size="12" fill="#4B5563">~ / andreas / portfolio / index.tsx</text>
+  <!-- status right -->
+  <circle cx="1046" cy="20" r="4" fill="#22C55E"/>
+  <text x="1056" y="25"
+        font-family="DejaVu Sans Mono, Courier New, monospace"
+        font-size="11" fill="#6B7280">available · short-term</text>
+
+  <!-- SIDEBAR -->
+  <rect x="0" y="40" width="222" height="556" fill="#0E0F10"/>
+  <line x1="222" y1="40" x2="222" y2="596" stroke="#252527" stroke-width="1"/>
+
+  <!-- WORKSPACE label -->
+  <text x="14" y="72"
+        font-family="DejaVu Sans Mono, Courier New, monospace"
+        font-size="9" fill="#374151">WORKSPACE</text>
+
+  <!-- portfolio/ folder -->
+  <text x="10" y="94" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="12" fill="#D1D5DB">&#x25B8; portfolio/</text>
+  <text x="22" y="111" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#4B5563">&#xB7; README.md</text>
+  <text x="22" y="127" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#4B5563">&#xB7; capabilities.ts</text>
+  <text x="22" y="143" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#4B5563">&#xB7; shipped.log</text>
+  <text x="22" y="159" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#4B5563">&#xB7; experience.json</text>
+  <text x="22" y="175" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#4B5563">&#xB7; contact.sh</text>
+
+  <!-- links/ folder -->
+  <text x="10" y="202" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="12" fill="#D1D5DB">&#x25B8; links/</text>
+  <text x="22" y="219" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#4B5563">&#xB7; email &#x2192;</text>
+  <text x="22" y="235" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#4B5563">&#xB7; linkedin &#x2192;</text>
+  <text x="22" y="251" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#4B5563">&#xB7; lt.solutions &#x2192;</text>
+  <text x="22" y="267" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#4B5563">&#xB7; CV.pdf &#x2193;</text>
+
+  <!-- sidebar divider -->
+  <line x1="8" y1="326" x2="214" y2="326" stroke="#1A1B1C" stroke-width="1"/>
+
+  <!-- whoami block -->
+  <text x="10" y="348" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#374151">$ whoami</text>
+  <text x="10" y="364" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#4B5563">&#x203A; andreas</text>
+  <text x="10" y="384" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#374151">$ pwd</text>
+  <text x="10" y="400" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#4B5563">&#x203A; /london/uk</text>
+  <text x="10" y="420" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#374151">$ uptime</text>
+  <text x="10" y="436" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#4B5563">&#x203A; 15 yrs, 0 days</text>
+
+  <!-- MAIN CONTENT ── starts x=248 -->
+
+  <!-- terminal prompt -->
+  <text x="248" y="84"
+        font-family="DejaVu Sans Mono, Courier New, monospace"
+        font-size="13" fill="#5DB88E">andreas@london:~$</text>
+  <text x="450" y="84"
+        font-family="DejaVu Sans Mono, Courier New, monospace"
+        font-size="13" fill="#C9C7BF"> cat README.md</text>
+
+  <!-- tag box (the ASCII bracket box from the site) -->
+  <rect x="248" y="96" width="210" height="52" rx="1"
+        fill="none" stroke="#3A3A3C" stroke-width="1"/>
+  <text x="258" y="113" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="10" fill="#6B7280">AI-NATIVE ITSM</text>
+  <text x="258" y="127" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="10" fill="#C9C7BF">ANDREAS NYBERG</text>
+  <text x="258" y="141" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="10" fill="#6B7280">ARCHITECT  ·  SME</text>
+
+  <!-- HEADLINE ── three lines -->
+  <!-- line 1: monospace bold -->
+  <text x="248" y="242"
+        font-family="DejaVu Sans Mono, Courier New, monospace"
+        font-size="52" font-weight="bold" fill="#E8E4D8">Service desks that</text>
+
+  <!-- line 2: italic serif orange (like the site's italic accent words) -->
+  <text x="248" y="308"
+        font-family="DejaVu Serif, Georgia, Times New Roman, serif"
+        font-size="52" font-weight="bold" font-style="italic" fill="#E8872A">actually deploy</text>
+
+  <!-- line 3: monospace bold + orange cursor block -->
+  <text x="248" y="374"
+        font-family="DejaVu Sans Mono, Courier New, monospace"
+        font-size="52" font-weight="bold" fill="#E8E4D8">in a week,</text>
+  <!-- cursor: DejaVu Sans Mono at 52px → char width ≈ 31.2px; "in a week," = 10 chars = 312px -->
+  <rect x="560" y="332" width="20" height="48" fill="#E8872A"/>
+
+  <!-- SUBTITLE comment lines -->
+  <text x="248" y="438"
+        font-family="DejaVu Sans Mono, Courier New, monospace"
+        font-size="13" fill="#374151">// AI-native ITSM architect · 15 years in enterprise service management</text>
+  <text x="248" y="456"
+        font-family="DejaVu Sans Mono, Courier New, monospace"
+        font-size="13" fill="#374151">// JSM · Assets · CMDB · Forge · multi-agent delivery · London</text>
+
+  <!-- BOTTOM STATUS BAR -->
+  <rect x="0" y="596" width="1200" height="34" fill="#0E0F10"/>
+  <line x1="0" y1="596" x2="1200" y2="596" stroke="#252527" stroke-width="1"/>
+  <circle cx="230" cy="613" r="4" fill="#22C55E"/>
+  <text x="240" y="618" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#22C55E">main</text>
+  <text x="278" y="618" font-family="DejaVu Sans Mono, Courier New, monospace" font-size="11" fill="#4B5563"> · utf-8 · 1f</text>
+  <text x="600" y="618" text-anchor="middle"
+        font-family="DejaVu Sans Mono, Courier New, monospace"
+        font-size="11" fill="#6B7280">andreas-nyberg.com</text>
+  <text x="1184" y="618" text-anchor="end"
+        font-family="DejaVu Sans Mono, Courier New, monospace"
+        font-size="11" fill="#4B5563">&#x25C6; main · v2026.05</text>
+
+</svg>
