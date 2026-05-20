@@ -1,0 +1,13 @@
+.git
+.git/**
+.gitignore
+.assetsignore
+.wrangler
+.wrangler/**
+node_modules
+node_modules/**
+*.md
+wrangler.jsonc
+Andreas Nyberg - AI-Native ITSM Architect & Atlassian SME*
+index-old-light.html
+andreas-nyberg-mockup.html
