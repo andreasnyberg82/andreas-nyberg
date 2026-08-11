@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Andreas Nyberg · AI-Native ITSM Architect &amp; Atlassian SME</title>
+  <meta name="description" content="AI-Native ITSM Architect and Atlassian SME with 15+ years of enterprise service management experience. Founder of LT.Solutions and creator of LaunchPad for Jira Service Management.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind via CDN (v3 utilities; runtime, no build step). -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            // v2 light-primary palette from lt.solutions CLAUDE.md
+            v2: {
+              bg: '#ffffff',
+              surface: '#F8FAFC',
+              alt: '#F1F5F9',
+              ink: '#0F1C2E',
+              'ink-muted': '#475569',
+              'ink-dim': '#64748B',
+              border: '#E2E8F0',
+              'border-emphasis': '#CBD5E0',
+              teal: '#0D9488',
+              'teal-soft': '#14B8A6',
+              'teal-tint': '#CCFBF1',
+              'teal-border': '#99F6E4',
+              amber: '#F59E0B',
+              navy: '#08122A',
+              'navy-deep': '#040C1A',
+            },
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'Helvetica Neue', 'Arial', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Courier New', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    body {
+      font-feature-settings: "cv11", "ss01", "ss03";
+      font-variant-numeric: tabular-nums;
+      font-optical-sizing: auto;
+    }
+    /* Smooth scroll for anchor jumps */
+    html { scroll-behavior: smooth; }
+
+    /* v2 card hover lift */
+    .v2-card {
+      transition: transform 220ms ease-out, box-shadow 220ms ease-out, border-color 220ms ease-out;
+    }
+    .v2-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(13, 148, 136, 0.35);
+      box-shadow: 0 10px 30px -12px rgba(8, 18, 42, 0.12);
+    }
+
+    /* Active pulse for current role timeline dot */
+    @keyframes v2-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.5); }
+      50%      { box-shadow: 0 0 0 5px rgba(13, 148, 136, 0); }
+    }
+    .v2-pulse-dot { animation: v2-pulse 2.4s ease-out infinite; }
+
+    /* Scroll-spy active link styles applied via JS toggling .active */
+    .nav-link.active { color: #0F1C2E; }
+  </style>
+</head>
+<body class="bg-v2-bg text-v2-ink font-sans antialiased">
+
+  <!-- NAV: light, sticky, 56px -->
+  <nav class="sticky top-0 z-50 border-b border-v2-border bg-v2-bg/95 backdrop-blur">
+    <div class="mx-auto flex h-14 max-w-7xl items-center justify-between px-6 lg:px-8">
+      <a href="#about" class="flex items-center gap-2.5 text-[14px] font-extrabold tracking-tight text-v2-ink">
+        <span class="grid h-7 w-7 grid-cols-2 grid-rows-2 gap-[2px] rounded-md bg-v2-navy p-1">
+          <span class="rounded-[2px] bg-v2-teal"></span>
+          <span class="rounded-[2px] bg-v2-amber"></span>
+          <span class="rounded-[2px] bg-white/20"></span>
+          <span class="rounded-[2px] bg-white/8"></span>
+        </span>
+        <span>Andreas Nyberg</span>
+      </a>
+      <ul class="hidden gap-1 md:flex">
+        <li><a href="#about" class="nav-link rounded-md px-3 py-1.5 text-[13px] font-medium text-v2-ink-muted transition-colors hover:bg-v2-surface hover:text-v2-ink">About</a></li>
+        <li><a href="#skills" class="nav-link rounded-md px-3 py-1.5 text-[13px] font-medium text-v2-ink-muted transition-colors hover:bg-v2-surface hover:text-v2-ink">Skills</a></li>
+        <li><a href="#experience" class="nav-link rounded-md px-3 py-1.5 text-[13px] font-medium text-v2-ink-muted transition-colors hover:bg-v2-surface hover:text-v2-ink">Experience</a></li>
+        <li><a href="#certifications" class="nav-link rounded-md px-3 py-1.5 text-[13px] font-medium text-v2-ink-muted transition-colors hover:bg-v2-surface hover:text-v2-ink">Certs</a></li>
+      </ul>
+      <a href="#cv" class="inline-flex items-center gap-2 rounded-md bg-v2-navy px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-[#0F1E38]">
+        Get my CV
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO: dark navy constant, portrait right -->
+  <section id="about" class="relative overflow-hidden border-b border-white/5 bg-v2-navy">
+    <div class="mx-auto max-w-7xl px-6 py-16 sm:py-20 lg:px-8 lg:py-24">
+      <div class="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-center lg:gap-16">
+        <div>
+          <p class="font-mono text-[13px] text-white/35">
+            <span class="text-v2-teal">$</span> whoami
+          </p>
+          <h1 class="mt-3 text-[clamp(2.25rem,5vw,3.25rem)] font-black tracking-[-0.03em] text-white" style="line-height:1.05;">
+            Andreas Nyberg
+          </h1>
+          <p class="mt-3 text-[17px] text-white/65">
+            AI-Native ITSM Architect &amp; Atlassian SME
+            <span class="mx-1.5 text-white/30">·</span>
+            Founder, LT.Solutions
+          </p>
+
+          <div class="mt-7 flex flex-wrap items-center gap-2 font-mono">
+            <span class="inline-flex items-center gap-2 rounded-full border border-[#166534]/60 bg-[#4ADE80]/10 px-3 py-1 text-[12px] font-medium text-[#4ADE80]">
+              <span class="size-1.5 rounded-full bg-[#4ADE80] v2-pulse-dot"></span>
+              Available for contract
+            </span>
+            <span class="inline-flex items-center gap-1.5 rounded-full border border-white/12 bg-white/5 px-3 py-1 text-[12px] text-white/65">
+              📍 London, UK
+            </span>
+            <a href="mailto:andreas@lt.solutions" class="inline-flex items-center gap-1.5 rounded-full border border-v2-teal/40 bg-v2-teal/8 px-3 py-1 text-[12px] text-v2-teal transition-colors hover:bg-v2-teal/15">
+              andreas@lt.solutions
+            </a>
+            <a href="https://lt.solutions" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 rounded-full border border-v2-teal/40 bg-v2-teal/8 px-3 py-1 text-[12px] text-v2-teal transition-colors hover:bg-v2-teal/15">
+              lt.solutions
+            </a>
+          </div>
+
+          <p class="mt-7 max-w-xl border-l-2 border-v2-teal pl-5 text-[15px] leading-[1.8] text-white/55">
+            AI-native ITSM Architect and Atlassian SME with over 15 years of enterprise service management experience.
+            Founder of LT.Solutions and creator of LaunchPad for Jira Service Management, a Forge-based Atlassian
+            Marketplace app that deploys production-ready CMDB schemas in minutes. Specialist in JSM, Atlassian Assets,
+            and automation-led transformations.
+          </p>
+        </div>
+
+        <!-- Portrait -->
+        <div class="relative mx-auto w-full max-w-sm lg:max-w-none">
+          <div class="relative overflow-hidden rounded-2xl border border-white/10 bg-v2-navy-deep shadow-2xl ring-1 ring-white/5">
+            <img src="andreas.jpeg" alt="Andreas Nyberg" class="block aspect-[4/5] w-full object-cover" />
+          </div>
+          <!-- Floating teal accent -->
+          <div aria-hidden="true" class="pointer-events-none absolute -right-3 -top-3 size-16 rounded-full bg-v2-teal/20 blur-2xl"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS: white surface, 4-cell grid (v2 pattern) -->
+  <section class="bg-v2-bg py-14 sm:py-16">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="grid grid-cols-2 overflow-hidden rounded-[10px] border border-v2-border bg-v2-border lg:grid-cols-4" style="gap: 1px;">
+        <div class="bg-v2-bg p-6">
+          <div class="font-mono text-[10px] uppercase tracking-[0.1em] text-v2-ink-muted">Experience</div>
+          <div class="mt-2 text-[38px] font-black tracking-[-0.04em] text-v2-ink leading-none">
+            <em class="not-italic text-v2-teal">15+</em>
+          </div>
+          <div class="mt-1 text-[12px] text-v2-ink-muted">years in ITSM</div>
+        </div>
+        <div class="bg-v2-bg p-6">
+          <div class="font-mono text-[10px] uppercase tracking-[0.1em] text-v2-ink-muted">Schemas shipped</div>
+          <div class="mt-2 text-[38px] font-black tracking-[-0.04em] text-v2-ink leading-none">
+            <em class="not-italic text-v2-teal">13</em>
+          </div>
+          <div class="mt-1 text-[12px] text-v2-ink-muted">CMDB models, production-ready</div>
+        </div>
+        <div class="bg-v2-bg p-6">
+          <div class="font-mono text-[10px] uppercase tracking-[0.1em] text-v2-ink-muted">Marketplace</div>
+          <div class="mt-2 text-[38px] font-black tracking-[-0.04em] text-v2-ink leading-none">
+            v<em class="not-italic text-v2-teal">2.10</em>
+          </div>
+          <div class="mt-1 text-[12px] text-v2-ink-muted">Forge app, live</div>
+        </div>
+        <div class="bg-v2-bg p-6">
+          <div class="font-mono text-[10px] uppercase tracking-[0.1em] text-v2-ink-muted">Users onboarded</div>
+          <div class="mt-2 text-[38px] font-black tracking-[-0.04em] text-v2-ink leading-none">
+            <em class="not-italic text-v2-teal">4,500+</em>
+          </div>
+          <div class="mt-1 text-[12px] text-v2-ink-muted">Kantar rollout</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS + PINNED: light surface alt -->
+  <section id="skills" class="bg-v2-surface py-20 sm:py-24">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="grid gap-12 lg:grid-cols-2">
+        <!-- Skills column -->
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="h-0.5 w-4 rounded-full bg-v2-teal"></span>
+            <span class="font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-v2-teal">// skills</span>
+          </div>
+          <h2 class="mt-3 text-[26px] font-black tracking-[-0.03em] text-v2-ink sm:text-[28px]" style="line-height:1.1;">
+            What I do.
+          </h2>
+
+          <div class="mt-8 space-y-5">
+            <!-- Atlassian -->
+            <div>
+              <p class="font-mono text-[10px] uppercase tracking-[0.06em] text-v2-ink-dim">Atlassian</p>
+              <div class="mt-2 flex flex-wrap gap-1.5">
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Jira</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">JSM</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Confluence</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Assets / CMDB</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Opsgenie</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Forge</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Rovo</span>
+              </div>
+            </div>
+            <!-- AI -->
+            <div>
+              <p class="font-mono text-[10px] uppercase tracking-[0.06em] text-v2-ink-dim">AI &amp; agentic</p>
+              <div class="mt-2 flex flex-wrap gap-1.5">
+                <span class="rounded-md border border-v2-teal-border bg-v2-teal-tint px-2.5 py-1 font-mono text-[11px] font-semibold text-[#0F766E]">Multi-agent Workflows</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Claude</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Codex</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Rovo Agent Design</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">LLM-assisted Dev</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">AI Adoption Strategy</span>
+              </div>
+            </div>
+            <!-- Integration -->
+            <div>
+              <p class="font-mono text-[10px] uppercase tracking-[0.06em] text-v2-ink-dim">Integration</p>
+              <div class="mt-2 flex flex-wrap gap-1.5">
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">REST APIs</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Webhooks</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Azure DevOps</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Forge SDK</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Automation Rules</span>
+              </div>
+            </div>
+            <!-- ITSM -->
+            <div>
+              <p class="font-mono text-[10px] uppercase tracking-[0.06em] text-v2-ink-dim">ITSM &amp; design</p>
+              <div class="mt-2 flex flex-wrap gap-1.5">
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Service Desk Design</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">ITSM Migrations</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">CMDB Architecture</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">SLA Design</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">ITIL 4</span>
+              </div>
+            </div>
+            <!-- Product -->
+            <div>
+              <p class="font-mono text-[10px] uppercase tracking-[0.06em] text-v2-ink-dim">Product</p>
+              <div class="mt-2 flex flex-wrap gap-1.5">
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Atlassian Marketplace</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Schema Architecture</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Go-to-Market</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">B2B Outreach</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">Product Roadmap</span>
+              </div>
+            </div>
+            <!-- Governance -->
+            <div>
+              <p class="font-mono text-[10px] uppercase tracking-[0.06em] text-v2-ink-dim">Governance</p>
+              <div class="mt-2 flex flex-wrap gap-1.5">
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">ISO 27001</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">SOC 2</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">AI Governance</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">SaaS Cost Optimisation</span>
+                <span class="rounded-md border border-v2-border bg-v2-bg px-2.5 py-1 font-mono text-[11px] text-v2-ink-muted">SC Cleared (lapsed)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pinned projects column -->
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="h-0.5 w-4 rounded-full bg-v2-teal"></span>
+            <span class="font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-v2-teal">// pinned</span>
+          </div>
+          <h2 class="mt-3 text-[26px] font-black tracking-[-0.03em] text-v2-ink sm:text-[28px]" style="line-height:1.1;">
+            Recent work.
+          </h2>
+
+          <div class="mt-8 space-y-3">
+            <article class="v2-card rounded-xl border-2 border-v2-teal/40 bg-v2-bg p-5">
+              <div class="flex items-center gap-2 font-mono text-[13px] font-semibold text-v2-teal">
+                <span aria-hidden="true">📦</span>
+                launchpad-for-jsm
+                <span class="rounded border border-v2-teal/40 px-1.5 py-0.5 text-[10px]">v2.10.0</span>
+              </div>
+              <p class="mt-2 text-[13px] leading-[1.6] text-v2-ink-muted">
+                Forge Marketplace app delivering 13 custom CMDB schemas under one subscription.
+                Excel import pipeline, Automation Rule Management API, Rovo agent suite companion app.
+              </p>
+              <p class="mt-2 font-mono text-[11px] text-v2-ink-dim">Forge · Node.js · Atlassian Marketplace</p>
+            </article>
+
+            <article class="v2-card rounded-xl border border-v2-border bg-v2-bg p-5">
+              <div class="flex items-center gap-2 font-mono text-[13px] font-semibold text-v2-teal">
+                <span aria-hidden="true">👤</span>
+                kantar-jsm-4500-user-rollout
+              </div>
+              <p class="mt-2 text-[13px] leading-[1.6] text-v2-ink-muted">
+                JSM MVP for 500 users across HR, IT, SOC &amp; NOC with full CMDB; Azure DevOps integration;
+                global 24/7 model trained across LATAM, EMEA, APAC.
+              </p>
+              <p class="mt-2 font-mono text-[11px] text-v2-ink-dim">Kantar Media · Mar-Sep 2025</p>
+            </article>
+
+            <article class="v2-card rounded-xl border border-v2-border bg-v2-bg p-5">
+              <div class="flex items-center gap-2 font-mono text-[13px] font-semibold text-v2-teal">
+                <span aria-hidden="true">⇄</span>
+                servicenow-to-jsm-migration
+              </div>
+              <p class="mt-2 text-[13px] leading-[1.6] text-v2-ink-muted">
+                Full platform migration for Perceptive Informatics. Assets CMDB schema design,
+                C-SAT/NPS reporting implementation.
+              </p>
+              <p class="mt-2 font-mono text-[11px] text-v2-ink-dim">Valiantys · 2025-2026</p>
+            </article>
+
+            <article class="v2-card rounded-xl border border-v2-border bg-v2-bg p-5">
+              <div class="flex items-center gap-2 font-mono text-[13px] font-semibold text-v2-teal">
+                <span aria-hidden="true">📄</span>
+                iso27001-confluence-hub
+              </div>
+              <p class="mt-2 text-[13px] leading-[1.6] text-v2-ink-muted">
+                Built ISO 27001 Documentation Hub in Confluence for Datasparq; praised by auditors
+                at final certification audit.
+              </p>
+              <p class="mt-2 font-mono text-[11px] text-v2-ink-dim">Datasparq · 2023-2025</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE: vertical timeline, light surface -->
+  <section id="experience" class="bg-v2-bg py-20 sm:py-24">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="flex items-center gap-2">
+        <span class="h-0.5 w-4 rounded-full bg-v2-teal"></span>
+        <span class="font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-v2-teal">// experience</span>
+      </div>
+      <h2 class="mt-3 text-[26px] font-black tracking-[-0.03em] text-v2-ink sm:text-[28px]" style="line-height:1.1;">
+        Fifteen years, shipped.
+      </h2>
+
+      <div class="mt-10 border-l border-v2-border pl-8">
+        <!-- Item 1: active -->
+        <div class="relative mb-10">
+          <span aria-hidden="true" class="v2-pulse-dot absolute -left-[2.5rem] top-1.5 size-3 rounded-full border-2 border-v2-teal bg-v2-teal"></span>
+          <p class="text-[16px] font-bold text-v2-ink">Founder &amp; Director</p>
+          <p class="mt-0.5 font-mono text-[12px] font-semibold text-v2-teal">Let's Talk Solutions Ltd (LT.Solutions)</p>
+          <p class="mt-1 font-mono text-[11px] text-v2-ink-dim">Mar 2025 - Present</p>
+          <p class="mt-3 text-[14px] leading-[1.7] text-v2-ink-muted">
+            Co-founded and bootstrapped LaunchPad for JSM to v2.10.0: 13 production CMDB schemas, Excel import pipeline, and
+            Automation Rule Management API. Multi-agent AI development workflow: Claude Code as PM/builder, Codex as QA auditor.
+            Four-layer commercial model spanning product, schema extensions, playbooks, and advisory services.
+          </p>
+        </div>
+
+        <div class="relative mb-10">
+          <span aria-hidden="true" class="absolute -left-[2.5rem] top-1.5 size-3 rounded-full border-2 border-v2-border-emphasis bg-v2-surface"></span>
+          <p class="text-[16px] font-bold text-v2-ink">Senior Consultant</p>
+          <p class="mt-0.5 font-mono text-[12px] font-semibold text-v2-teal">Valiantys, UK (Remote)</p>
+          <p class="mt-1 font-mono text-[11px] text-v2-ink-dim">Nov 2025 - Mar 2026</p>
+          <p class="mt-3 text-[14px] leading-[1.7] text-v2-ink-muted">
+            Clients included Perceptive Informatics (ServiceNow → JSM migration, Assets CMDB design, C-SAT/NPS reporting),
+            Cancer Research UK (JSM and Assets implementation), System C (healthcare IT Discovery, co-authored solution design
+            document), and APAX Finance (email-based support to structured JSM workflows). Microsoft Entra ID and Intune CMDB
+            integrations across engagements.
+          </p>
+        </div>
+
+        <div class="relative mb-10">
+          <span aria-hidden="true" class="absolute -left-[2.5rem] top-1.5 size-3 rounded-full border-2 border-v2-border-emphasis bg-v2-surface"></span>
+          <p class="text-[16px] font-bold text-v2-ink">Technical Architect / Atlassian SME</p>
+          <p class="mt-0.5 font-mono text-[12px] font-semibold text-v2-teal">Kantar Media, London</p>
+          <p class="mt-1 font-mono text-[11px] text-v2-ink-dim">Mar 2025 - Sep 2025</p>
+          <p class="mt-3 text-[14px] leading-[1.7] text-v2-ink-muted">
+            Built JSM MVP for 500 initial users across HR, IT, SOC, and NOC ahead of a 4,500-user global rollout. Designed CMDB
+            covering location hierarchies, workstations, network gear, and server infrastructure. Integrated JSM with Azure
+            DevOps. Delivered knowledge transfer for LATAM, EMEA, and APAC stakeholders supporting a global 24/7 service desk.
+          </p>
+        </div>
+
+        <div class="relative mb-10">
+          <span aria-hidden="true" class="absolute -left-[2.5rem] top-1.5 size-3 rounded-full border-2 border-v2-border-emphasis bg-v2-surface"></span>
+          <p class="text-[16px] font-bold text-v2-ink">Data Service &amp; Internal IT Manager</p>
+          <p class="mt-0.5 font-mono text-[12px] font-semibold text-v2-teal">Datasparq, London</p>
+          <p class="mt-1 font-mono text-[11px] text-v2-ink-dim">Jan 2023 - Jan 2025</p>
+          <p class="mt-3 text-[14px] leading-[1.7] text-v2-ink-muted">
+            Migrated internal support from Zendesk to JSM. Designed GCP and Atlassian cost-optimisation automations via
+            webhooks and APIs. Administered Atlassian Suite, Google Workspace, GitHub, GCP, and Azure. Built ISO 27001
+            Confluence Documentation Hub; praised by external auditors at final certification.
+          </p>
+        </div>
+
+        <div class="relative mb-10">
+          <span aria-hidden="true" class="absolute -left-[2.5rem] top-1.5 size-3 rounded-full border-2 border-v2-border-emphasis bg-v2-surface"></span>
+          <p class="text-[16px] font-bold text-v2-ink">Global Support Manager</p>
+          <p class="mt-0.5 font-mono text-[12px] font-semibold text-v2-teal">Zephr (A Part of Zuora), London</p>
+          <p class="mt-1 font-mono text-[11px] text-v2-ink-dim">Jul 2021 - Jan 2023</p>
+          <p class="mt-3 text-[14px] leading-[1.7] text-v2-ink-muted">
+            Built and scaled B2B technical support teams in UK and New Zealand for tier-1 clients including WHICH?,
+            New York Post, and News Corp Australia. Designed escalation workflows across Jira, PagerDuty, and Slack.
+            Led company-wide Jira administration and workflow optimisation.
+          </p>
+        </div>
+
+        <div class="relative mb-10">
+          <span aria-hidden="true" class="absolute -left-[2.5rem] top-1.5 size-3 rounded-full border-2 border-v2-border-emphasis bg-v2-surface"></span>
+          <p class="text-[16px] font-bold text-v2-ink">L2 Support Manager</p>
+          <p class="mt-0.5 font-mono text-[12px] font-semibold text-v2-teal">Endeavor Streaming, London</p>
+          <p class="mt-1 font-mono text-[11px] text-v2-ink-dim">Nov 2018 - Nov 2020</p>
+          <p class="mt-3 text-[14px] leading-[1.7] text-v2-ink-muted">
+            Built and led Endeavor's first UK-based L2 support department serving NBA, EFL, OSN, EuroLeague, FEI, UFC,
+            and BT Box Office. Developed proprietary troubleshooting tools reducing dev escalations. Established a 24/5
+            global support model.
+          </p>
+        </div>
+
+        <div class="relative">
+          <span aria-hidden="true" class="absolute -left-[2.5rem] top-1.5 size-3 rounded-full border-2 border-v2-border-emphasis bg-v2-surface"></span>
+          <p class="text-[16px] font-bold text-v2-ink">Technical Support Manager / Customer Service Manager</p>
+          <p class="mt-0.5 font-mono text-[12px] font-semibold text-v2-teal">NeuLion Inc &amp; Saffron Digital</p>
+          <p class="mt-1 font-mono text-[11px] text-v2-ink-dim">Oct 2011 - Nov 2018</p>
+          <p class="mt-3 text-[14px] leading-[1.7] text-v2-ink-muted">
+            <strong class="font-semibold text-v2-ink">NeuLion</strong> (2012-2018): Technical Support Manager for streaming
+            platforms used by ITV, Carrefour, and BT TV; led onboarding of 60+ EFL football clubs onto a new VOD platform.
+            <strong class="font-semibold text-v2-ink">Saffron Digital</strong> (2011-2012): built support teams for KDDI
+            Videopass and ITV Essentials; led CRM implementations and cost-saving workflow design.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS: surface alt -->
+  <section id="certifications" class="bg-v2-surface py-20 sm:py-24">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="flex items-center gap-2">
+        <span class="h-0.5 w-4 rounded-full bg-v2-teal"></span>
+        <span class="font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-v2-teal">// certifications &amp; development</span>
+      </div>
+      <h2 class="mt-3 text-[26px] font-black tracking-[-0.03em] text-v2-ink sm:text-[28px]" style="line-height:1.1;">
+        Recently certified.
+      </h2>
+
+      <ul class="mt-8 max-w-3xl divide-y divide-v2-border border-y border-v2-border">
+        <li class="flex items-start gap-3 py-3.5 text-[14px] leading-[1.5] text-v2-ink-muted">
+          <span class="mt-1.5 size-1.5 shrink-0 rounded-full bg-v2-teal"></span>
+          <span>ITIL® 4: Introduction to Service Management <span class="text-v2-ink-dim">- LinkedIn Learning (Feb 2025)</span></span>
+        </li>
+        <li class="flex items-start gap-3 py-3.5 text-[14px] leading-[1.5] text-v2-ink-muted">
+          <span class="mt-1.5 size-1.5 shrink-0 rounded-full bg-v2-teal"></span>
+          <span>Agile Project Management with Jira Cloud <span class="text-v2-ink-dim">- Atlassian University (Feb 2025)</span></span>
+        </li>
+        <li class="flex items-start gap-3 py-3.5 text-[14px] leading-[1.5] text-v2-ink-muted">
+          <span class="mt-1.5 size-1.5 shrink-0 rounded-full bg-v2-teal"></span>
+          <span>Jira Administration: Automation <span class="text-v2-ink-dim">- LinkedIn Learning (Feb 2025)</span></span>
+        </li>
+        <li class="flex items-start gap-3 py-3.5 text-[14px] leading-[1.5] text-v2-ink-muted">
+          <span class="mt-1.5 size-1.5 shrink-0 rounded-full bg-v2-teal"></span>
+          <span>IT Service Desk: Service Management <span class="text-v2-ink-dim">- LinkedIn Learning (Feb 2025)</span></span>
+        </li>
+        <li class="flex items-start gap-3 py-3.5 text-[14px] leading-[1.5] text-v2-ink-muted">
+          <span class="mt-1.5 size-1.5 shrink-0 rounded-full bg-v2-teal"></span>
+          <span>Git Essential Training <span class="text-v2-ink-dim">- LinkedIn Learning (Feb 2025)</span></span>
+        </li>
+        <li class="flex items-start gap-3 py-3.5 text-[14px] leading-[1.5] text-v2-ink-muted">
+          <span class="mt-1.5 size-1.5 shrink-0 rounded-full bg-v2-teal"></span>
+          <span>ISO 27001 Implementation &amp; IT Security Compliance <span class="text-v2-ink-dim">- Practical Experience</span></span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CV / CTA: dark navy panel inside white surface (matches v2 CTA pattern) -->
+  <section id="cv" class="bg-v2-bg">
+    <div class="mx-auto max-w-7xl px-6 py-20 sm:px-8 sm:py-24 lg:px-8">
+      <div class="relative isolate overflow-hidden rounded-3xl bg-v2-navy px-6 py-16 text-center shadow-2xl sm:px-16">
+        <h2 class="text-[32px] font-black tracking-[-0.03em] text-white sm:text-[36px]" style="line-height:1.05;">
+          Want the <em class="not-italic text-v2-teal">full picture</em>?
+        </h2>
+        <p class="mx-auto mt-4 max-w-xl text-[15px] leading-[1.6] text-white/55">
+          Drop a line and I'll send the PDF. Currently open to senior contract / consulting work in JSM, Atlassian Assets,
+          and AI-assisted ITSM transformations.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <a href="mailto:andreas@lt.solutions?subject=CV%20request" class="inline-flex items-center gap-2 rounded-md bg-v2-teal px-6 py-3 text-[14px] font-bold text-white shadow-sm transition-colors hover:bg-v2-teal-soft">
+            <span>↓</span> Request CV (PDF)
+          </a>
+          <a href="https://www.linkedin.com/in/andreas-l-a-nyberg/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-md border border-white/20 px-6 py-3 text-[14px] font-semibold text-white/85 transition-colors hover:border-white/40 hover:text-white">
+            LinkedIn →
+          </a>
+        </div>
+        <!-- subtle teal radial accent -->
+        <svg viewBox="0 0 1024 1024" aria-hidden="true" class="absolute left-1/2 top-1/2 -z-10 size-[64rem] -translate-x-1/2 -translate-y-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]">
+          <circle r="512" cx="512" cy="512" fill="url(#cta-grad)" fill-opacity="0.4"></circle>
+          <defs>
+            <radialGradient id="cta-grad">
+              <stop stop-color="#0D9488"></stop>
+              <stop offset="1" stop-color="#08122A"></stop>
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER: always dark -->
+  <footer class="bg-v2-navy-deep px-6 py-10 text-center text-[12px] text-white/40 lg:px-8">
+    Andreas Nyberg ·
+    <a href="https://lt.solutions" target="_blank" rel="noopener" class="text-v2-teal transition-colors hover:text-v2-teal-soft">lt.solutions</a> ·
+    <a href="mailto:andreas@lt.solutions" class="text-v2-teal transition-colors hover:text-v2-teal-soft">andreas@lt.solutions</a>
+    · <span class="font-mono">London</span>
+  </footer>
+
+  <script>
+    // Scroll-spy: toggle .active on nav links
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          navLinks.forEach((a) =>
+            a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id)
+          );
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach((s) => observer.observe(s));
+  </script>
+
+</body>
+</html>

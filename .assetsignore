@@ -1,13 +1,36 @@
+# assets.directory is "." in wrangler.jsonc, so anything NOT listed here
+# becomes a public URL on andreas-nyberg.com. Negation (!) is unreliable in
+# this file, so every non-served path is listed explicitly.
+#
+# Files intentionally served: index.html, andreas.jpeg, andreas-nyberg-cv.pdf,
+# og-image.png, apple-touch-icon.png, favicon.svg
+#
+# When adding a working file to the repo root, add it here too.
+
 .git
 .git/**
 .gitignore
 .assetsignore
 .wrangler
 .wrangler/**
+.gstack
+.gstack/**
+.memsearch
+.memsearch/**
+.DS_Store
 node_modules
 node_modules/**
 *.md
 wrangler.jsonc
-Andreas Nyberg - AI-Native ITSM Architect & Atlassian SME*
-index-old-light.html
-andreas-nyberg-mockup.html
+
+# everything retired lives here
+archive
+archive/**
+
+# CV source and dated copy (the served download is andreas-nyberg-cv.pdf)
+Andreas Nyberg CV (standalone).html
+Andreas-Nyberg-CV-2026-08-11.pdf
+
+# og-image.png generators, not served themselves
+og-image.html
+og-image.svg

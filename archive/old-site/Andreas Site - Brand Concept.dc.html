@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      /* LT.Solutions dark tokens (ink base) */
+      --bg:          #101216;
+      --bg-2:        #171A1F;
+      --bg-3:        #1D2025;
+      --bg-4:        #24272C;
+      --rule:        rgba(246,242,233,0.08);
+      --rule-2:      rgba(246,242,233,0.15);
+      --ink:         #F6F2E9;
+      --ink-2:       rgba(246,242,233,0.82);
+      --ink-muted:   rgba(246,242,233,0.55);
+      --ink-faint:   rgba(246,242,233,0.34);
+      --ink-dim:     rgba(246,242,233,0.18);
+      /* umbrella red — the single accent (was amber) */
+      --primary:     #E5455E;
+      --primary-2:   #EE6072;
+      --primary-tint:rgba(229,69,94,0.12);
+      --green:       #4FBF8B;   /* status only */
+      --blue:        #6E92C8;   /* secondary accent, sparing */
+
+      --sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+      --max: 1280px;
+      --gutter: clamp(20px, 4vw, 48px);
+      --sidebar: 240px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 13.5px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--primary); color: #fff; }
+
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(0deg,
+        rgba(246,242,233,0.014) 0px, rgba(246,242,233,0.014) 1px,
+        transparent 1px, transparent 3px);
+      mix-blend-mode: overlay;
+      z-index: 1;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── topbar ── */
+    .topbar { position: sticky; top: 0; z-index: 50; background: rgba(16,18,22,0.82); border-bottom: 1px solid var(--rule); backdrop-filter: blur(10px); }
+    .topbar-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); height: 38px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px; font-size: 11.5px; letter-spacing: 0.02em; }
+    .traffic { display: inline-flex; gap: 7px; align-items: center; }
+    .traffic span { width: 11px; height: 11px; border-radius: 50%; background: var(--bg-4); }
+    .traffic span:nth-child(1) { background: #FF5F57; }
+    .traffic span:nth-child(2) { background: #FEBC2E; }
+    .traffic span:nth-child(3) { background: #28C840; }
+    .topbar-path { color: var(--ink-muted); justify-self: center; display: inline-flex; align-items: center; gap: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .topbar-path .crumb { color: var(--ink-faint); }
+    .topbar-path .file { color: var(--ink); }
+    .topbar-path .sep { color: var(--ink-dim); }
+    .topbar-right { display: inline-flex; align-items: center; gap: 18px; color: var(--ink-muted); justify-self: end; }
+    .branch { display: inline-flex; align-items: center; gap: 6px; }
+    .branch::before { content: ""; width: 6px; height: 6px; background: var(--primary); transform: rotate(45deg); }
+    .avail { display: inline-flex; align-items: center; gap: 7px; }
+    .avail .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: blip 2.4s ease-out infinite; }
+    @keyframes blip { 0% { box-shadow: 0 0 0 0 rgba(79,191,139,0.55); } 70% { box-shadow: 0 0 0 7px rgba(79,191,139,0); } 100% { box-shadow: 0 0 0 0 rgba(79,191,139,0); } }
+
+    /* ── shell / panes ── */
+    .shell { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); position: relative; z-index: 2; }
+    .pane-grid { display: grid; grid-template-columns: var(--sidebar) 1fr; min-height: 100vh; border-left: 1px solid var(--rule); border-right: 1px solid var(--rule); }
+
+    /* ── file tree ── */
+    .tree { border-right: 1px solid var(--rule); padding: 20px 0; position: sticky; top: 38px; align-self: start; height: calc(100vh - 38px); overflow-y: auto; font-size: 12px; }
+    .tree::-webkit-scrollbar { width: 6px; }
+    .tree::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 3px; }
+    .tree-brand { display: flex; align-items: center; gap: 9px; padding: 0 18px 16px; margin-bottom: 4px; border-bottom: 1px solid var(--rule); }
+    .tree-brand img { width: 20px; height: 20px; display: block; }
+    .tree-brand b { font-family: var(--sans); font-size: 12.5px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+    .tree-label { padding: 16px 18px 0; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+    .tree-folder { margin-bottom: 6px; }
+    .tree-folder-name { padding: 4px 18px; color: var(--ink-2); display: flex; align-items: center; gap: 8px; font-weight: 500; }
+    .tree-folder-name::before { content: "▾"; color: var(--ink-faint); font-size: 9px; width: 8px; }
+    .tree-files { padding-left: 24px; }
+    .tree-file { display: flex; align-items: center; gap: 8px; padding: 3px 18px 3px 8px; color: var(--ink-muted); transition: background .15s, color .15s; position: relative; font-size: 11.5px; }
+    .tree-file::before { content: "•"; color: var(--ink-dim); font-size: 10px; width: 8px; }
+    .tree-file:hover { background: var(--bg-3); color: var(--ink); }
+    .tree-file.active { background: var(--bg-3); color: var(--primary); }
+    .tree-file.active::before { color: var(--primary); }
+    .tree-meta { margin-left: auto; font-size: 10px; color: var(--ink-dim); }
+    .tree-cli { margin: 28px 18px 0; padding-top: 18px; border-top: 1px solid var(--rule); font-size: 11px; color: var(--ink-muted); line-height: 1.9; }
+    .tree-cli .row { display: flex; gap: 8px; }
+    .tree-cli .row span:first-child { color: var(--ink-faint); width: 14px; }
+    .tree-cli .row .amber { color: var(--primary); }
+
+    /* ── editor ── */
+    .editor { position: relative; }
+    .gutter { position: absolute; left: 0; top: 0; bottom: 0; width: 56px; padding-top: 64px; border-right: 1px solid var(--rule); font-size: 10.5px; color: var(--ink-dim); text-align: right; user-select: none; pointer-events: none; }
+    .gutter span { display: block; padding: 0 12px 0 0; line-height: 1.9; }
+    .editor-body { padding: 64px 48px 64px 88px; }
+
+    /* ── prompts ── */
+    .prompt-line { display: flex; align-items: center; gap: 10px; color: var(--ink-faint); margin-bottom: 18px; font-size: 12.5px; }
+    .prompt-line .ps { color: var(--green); }
+    .prompt-line .cmd { color: var(--ink); }
+    .prompt-line .arg { color: var(--primary); }
+    .ascii-mark { font-size: 11px; line-height: 1.05; color: var(--ink-dim); margin: 18px 0 28px; white-space: pre; font-weight: 400; }
+    .ascii-mark .h { color: var(--primary); }
+
+    /* ── hero ── */
+    h1.boot { font-family: var(--sans); font-weight: 700; font-size: clamp(2.1rem, 5.4vw, 4.2rem); line-height: 1.03; letter-spacing: -0.035em; color: var(--ink); margin-bottom: 32px; max-width: 17ch; }
+    h1.boot .italic { font-family: var(--sans); font-style: italic; font-weight: 600; color: var(--primary); letter-spacing: -0.02em; }
+    h1.boot .cursor { display: inline-block; width: 0.5em; height: 0.9em; vertical-align: -0.06em; background: var(--primary); margin-left: 0.1em; animation: caret 1.05s steps(1) infinite; }
+    @keyframes caret { 50% { opacity: 0; } }
+    .lede { font-family: var(--sans); font-size: 16px; line-height: 1.7; color: var(--ink-2); max-width: 60ch; margin-bottom: 36px; }
+    .lede .k { font-family: var(--mono); color: var(--primary); font-size: 14px; }
+    .lede strong { color: var(--ink); font-weight: 600; }
+    .hero-block { display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; margin-bottom: 72px; }
+    .portrait-frame { position: relative; aspect-ratio: 4 / 5; background: var(--bg-3); border: 1px solid var(--rule-2); overflow: hidden; }
+    .portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; filter: saturate(1.02) contrast(1.02); transition: filter .6s ease; }
+    .portrait-frame:hover img { filter: saturate(1.08) contrast(1.04); }
+    .portrait-frame::before { content: "portrait.jpg"; position: absolute; left: 10px; top: 10px; font-family: var(--mono); font-size: 10.5px; color: var(--ink); mix-blend-mode: difference; letter-spacing: 0.04em; z-index: 2; }
+    .portrait-frame::after { content: "// London 51.5074°N"; position: absolute; left: 10px; bottom: 10px; font-family: var(--mono); font-size: 10.5px; color: var(--primary); letter-spacing: 0.04em; z-index: 2; }
+    .portrait-corner { position: absolute; width: 14px; height: 14px; border: 1px solid var(--primary); }
+    .portrait-corner.tl { top: 6px; left: 6px; border-right: none; border-bottom: none; }
+    .portrait-corner.tr { top: 6px; right: 6px; border-left: none; border-bottom: none; }
+    .portrait-corner.bl { bottom: 6px; left: 6px; border-right: none; border-top: none; }
+    .portrait-corner.br { bottom: 6px; right: 6px; border-left: none; border-top: none; }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px; }
+    .btn { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.01em; padding: 11px 18px; display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--rule-2); background: transparent; color: var(--ink); transition: background .18s, border-color .18s, color .18s; cursor: pointer; }
+    .btn:hover { background: var(--bg-3); border-color: var(--primary); color: var(--primary); }
+    .btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); font-weight: 600; }
+    .btn-primary:hover { background: var(--primary-2); color: #fff; border-color: var(--primary-2); }
+    .btn .arr { transition: transform .18s; display: inline-block; }
+    .btn:hover .arr { transform: translateX(3px); }
+    .meta-table { display: grid; grid-template-columns: auto 1fr; gap: 8px 28px; padding: 18px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); font-size: 11.5px; max-width: 540px; }
+    .meta-table dt { color: var(--ink-faint); }
+    .meta-table dd { color: var(--ink); }
+
+    /* ── sections ── */
+    .section { margin-top: 96px; scroll-margin-top: 60px; }
+    .section-cmd { color: var(--ink-faint); font-size: 12.5px; }
+    .section-cmd .ps { color: var(--green); }
+    .section-cmd .cmd { color: var(--ink); }
+    .section-cmd .arg { color: var(--primary); }
+    .section-out { color: var(--ink-dim); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 30px; padding-left: 14px; border-left: 1px solid var(--rule-2); }
+    .section-out .count { color: var(--primary); }
+    h2.section-title { font-family: var(--sans); font-weight: 700; font-size: clamp(1.7rem, 3vw, 2.4rem); letter-spacing: -0.032em; line-height: 1.1; color: var(--ink); margin: 18px 0 36px; max-width: 26ch; }
+    h2.section-title .italic { font-family: var(--sans); font-style: italic; font-weight: 600; color: var(--primary); }
+
+    /* ── clients ── */
+    .clients { margin-top: 56px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 18px 0; }
+    .clients-label { font-size: 10.5px; color: var(--ink-faint); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .clients-label::before { content: "#"; color: var(--primary); font-weight: 600; }
+    .clients-list { display: flex; flex-wrap: wrap; gap: 6px 0; align-items: center; font-size: 12.5px; color: var(--ink-2); line-height: 1.6; }
+    .clients-list .name { padding: 2px 12px; border-right: 1px solid var(--rule); white-space: nowrap; }
+    .clients-list .name:first-child { padding-left: 0; }
+    .clients-list .name:last-child { border-right: none; }
+    .clients-list .name:hover { color: var(--primary); }
+
+    /* ── capabilities ── */
+    .cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+    .cap { padding: 24px 22px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: flex; flex-direction: column; gap: 10px; transition: background .15s; }
+    .cap:hover { background: var(--bg-2); }
+    .cap-num { font-family: var(--mono); font-size: 10.5px; color: var(--primary); letter-spacing: 0.1em; }
+    .cap-name { font-family: var(--sans); font-size: 15px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; line-height: 1.3; }
+    .cap-desc { font-family: var(--sans); font-size: 13px; color: var(--ink-muted); line-height: 1.65; }
+
+    /* ── skill packages ── */
+    .pkg { margin-top: 56px; display: grid; grid-template-columns: 1fr; gap: 24px; }
+    .pkg-row { display: grid; grid-template-columns: 220px 1fr; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+    .pkg-row:first-child { border-top: 1px solid var(--rule); }
+    .pkg-label { display: flex; align-items: center; gap: 10px; font-size: 11.5px; color: var(--ink-faint); letter-spacing: 0.08em; text-transform: uppercase; }
+    .pkg-label::before { content: "▸"; color: var(--primary); font-size: 9px; }
+    .pkg-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip { font-size: 11.5px; color: var(--ink-2); padding: 5px 11px; background: var(--bg-2); border: 1px solid var(--rule); transition: background .15s, color .15s, border-color .15s; }
+    .chip:hover { background: var(--bg-3); border-color: var(--primary); color: var(--primary); }
+
+    /* ── commits ── */
+    .commits { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .commit { display: grid; grid-template-columns: 100px 1fr 220px; gap: 28px; padding: 24px 4px; border-bottom: 1px solid var(--rule); align-items: start; transition: background .18s; }
+    .commit:last-child { border-bottom: none; }
+    .commit:hover { background: var(--bg-2); }
+    .commit-hash { font-family: var(--mono); font-size: 11.5px; color: var(--primary); letter-spacing: 0.04em; padding-top: 2px; }
+    .commit-hash .verb { display: block; font-size: 10px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+    .commit-body { display: flex; flex-direction: column; gap: 8px; }
+    .commit-title { font-family: var(--sans); font-size: 16px; font-weight: 600; color: var(--ink); letter-spacing: -0.015em; line-height: 1.3; }
+    .commit-meta { font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); }
+    .commit-meta .dot { color: var(--primary); margin: 0 6px; }
+    .commit-desc { font-family: var(--sans); font-size: 13.5px; line-height: 1.7; color: var(--ink-2); max-width: 68ch; }
+    .commit-desc strong { color: var(--ink); font-weight: 600; }
+    .commit-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .commit-link { font-family: var(--mono); font-size: 11.5px; color: var(--primary); padding: 6px 12px; border: 1px solid var(--rule-2); letter-spacing: 0.01em; display: inline-flex; align-items: center; gap: 8px; transition: background .15s, border-color .15s; }
+    .commit-link:hover { background: var(--bg-3); border-color: var(--primary); }
+    .commit-link.primary { background: var(--primary-tint); border-color: var(--primary); }
+    .commit-stack { display: flex; flex-wrap: wrap; gap: 5px; align-self: start; padding-top: 4px; }
+    .stack-chip { font-family: var(--mono); font-size: 10.5px; color: var(--ink-muted); padding: 3px 8px; border: 1px solid var(--rule); letter-spacing: 0.02em; }
+
+    /* ── log timeline ── */
+    .log { display: grid; grid-template-columns: 1fr; font-size: 12.5px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .log-row { display: grid; grid-template-columns: 130px 24px 1fr; gap: 16px; padding: 22px 4px; border-bottom: 1px solid var(--rule); align-items: start; transition: background .18s; }
+    .log-row:last-child { border-bottom: none; }
+    .log-row:hover { background: var(--bg-2); }
+    .log-date { font-family: var(--mono); color: var(--ink-faint); font-size: 11px; letter-spacing: 0.02em; padding-top: 3px; }
+    .log-date strong { color: var(--primary); font-weight: 500; }
+    .log-bullet { width: 10px; height: 10px; background: var(--bg); border: 2px solid var(--primary); margin-top: 5px; }
+    .log-row.current .log-bullet { background: var(--primary); }
+    .log-row.passive .log-bullet { border-color: var(--ink-dim); }
+    .log-role { font-family: var(--sans); font-size: 15px; font-weight: 600; color: var(--ink); letter-spacing: -0.012em; line-height: 1.3; margin-bottom: 4px; }
+    .log-company { font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); margin-bottom: 12px; }
+    .log-company .at { color: var(--ink-dim); }
+    .log-desc { font-family: var(--sans); font-size: 13.5px; line-height: 1.75; color: var(--ink-2); max-width: 72ch; }
+    .log-desc strong { color: var(--ink); font-weight: 600; }
+
+    /* ── credentials yaml ── */
+    .json-block { background: var(--bg-2); border: 1px solid var(--rule); padding: 24px 28px; font-family: var(--mono); font-size: 12.5px; line-height: 1.85; color: var(--ink-2); overflow-x: auto; }
+    .json-block .k { color: var(--primary); }
+    .json-block .s { color: var(--ink); }
+    .json-block .c { color: var(--ink-faint); font-style: italic; }
+    .json-block .p { color: var(--green); }
+    .json-block .b { color: var(--ink-muted); }
+
+    /* ── boot stats ── */
+    .boot-stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin-top: 16px; }
+    .boot-stat { padding: 24px 22px; border-right: 1px solid var(--rule); display: flex; flex-direction: column; gap: 10px; }
+    .boot-stat:last-child { border-right: none; }
+    .boot-stat-k { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); letter-spacing: 0.1em; text-transform: uppercase; }
+    .boot-stat-v { font-family: var(--sans); font-weight: 700; font-size: clamp(1.9rem, 3vw, 2.5rem); letter-spacing: -0.04em; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+    .boot-stat-v .italic { font-family: var(--sans); font-style: italic; font-weight: 600; color: var(--primary); }
+    .boot-stat-sub { font-family: var(--mono); font-size: 11px; color: var(--ink-muted); line-height: 1.4; }
+
+    /* ── CTA ── */
+    .cta { margin-top: 96px; border: 1px solid var(--rule-2); background: radial-gradient(circle at 82% 0%, rgba(229,69,94,0.09), transparent 52%), var(--bg-2); padding: 56px 48px; position: relative; overflow: hidden; }
+    .cta::before { content: "● connection: open"; position: absolute; top: 14px; right: 18px; font-family: var(--mono); font-size: 10.5px; color: var(--primary); letter-spacing: 0.04em; }
+    .cta-prompt { font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint); margin-bottom: 16px; }
+    .cta-prompt .ps { color: var(--green); }
+    .cta-prompt .cmd { color: var(--ink); }
+    h2.cta-title { font-family: var(--sans); font-weight: 700; font-size: clamp(1.7rem, 3.4vw, 2.6rem); letter-spacing: -0.032em; line-height: 1.1; color: var(--ink); max-width: 22ch; margin-bottom: 22px; }
+    h2.cta-title .italic { font-family: var(--sans); font-style: italic; font-weight: 600; color: var(--primary); }
+    .cta-desc { font-family: var(--sans); font-size: 14.5px; line-height: 1.7; color: var(--ink-2); max-width: 60ch; margin-bottom: 28px; }
+
+    /* ── statusbar ── */
+    .statusbar { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); border-top: 1px solid var(--rule); position: relative; z-index: 2; }
+    .statusbar-inner { height: 34px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px; font-size: 11px; color: var(--ink-muted); }
+    .statusbar-left, .statusbar-right { display: inline-flex; align-items: center; gap: 18px; }
+    .statusbar-right { justify-self: end; }
+    .sb-cell { display: inline-flex; align-items: center; gap: 6px; }
+    .sb-cell .k { color: var(--ink-faint); }
+    .sb-cell .v { color: var(--ink); }
+    .sb-cell .amber { color: var(--primary); }
+    .sb-cell a { color: var(--ink); transition: color .15s; }
+    .sb-cell a:hover { color: var(--primary); }
+
+    /* ── responsive ── */
+    @media (max-width: 980px) {
+      .pane-grid { grid-template-columns: 1fr; min-height: auto; }
+      .pane-grid > * { min-width: 0; }
+      .tree { position: sticky; top: 38px; z-index: 40; height: auto; overflow-x: auto; overflow-y: hidden; border-right: none; border-bottom: 1px solid var(--rule); padding: 10px var(--gutter); margin: 0 calc(-1 * var(--gutter)); background: var(--bg); backdrop-filter: blur(8px); scrollbar-width: none; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+      .tree::-webkit-scrollbar { display: none; }
+      .tree-brand, .tree-label, .tree-folder-name, .tree-cli { display: none; }
+      .tree-folder { margin: 0; display: contents; }
+      .tree-files { padding: 0; display: flex; gap: 6px; align-items: center; }
+      .tree-file { padding: 11px 14px; font-size: 12.5px; border: 1px solid var(--rule); background: var(--bg-2); min-height: 44px; line-height: 1; flex: 0 0 auto; }
+      .tree-file::before { content: ""; display: none; }
+      .tree-file.active { background: var(--bg-3); border-color: var(--primary); color: var(--primary); }
+      .tree-meta { display: none; }
+      .gutter { display: none; }
+      .editor { min-width: 0; }
+      .editor-body { padding: 40px 0; }
+      .hero-block { grid-template-columns: 1fr; gap: 28px; }
+      .portrait-frame { max-width: 280px; }
+      .cap-grid { grid-template-columns: repeat(2, 1fr); }
+      .commit { grid-template-columns: 1fr; gap: 12px; }
+      .commit-stack { padding-top: 0; }
+      .log-row { grid-template-columns: 90px 18px 1fr; gap: 12px; }
+      .pkg-row { grid-template-columns: 1fr; gap: 10px; }
+      .boot-stats { grid-template-columns: repeat(2, 1fr); }
+      .boot-stat { border-right: none; border-bottom: 1px solid var(--rule); }
+      .boot-stat:nth-child(odd) { border-right: 1px solid var(--rule); }
+      .boot-stat:nth-last-child(-n+2) { border-bottom: none; }
+      .topbar-path { display: none; }
+      .cta { padding: 36px 24px; }
+      .ascii-mark { font-size: 10px; overflow-x: auto; }
+    }
+    @media (max-width: 640px) {
+      :root { --gutter: 16px; }
+      body { font-size: 14px; }
+      .prompt-line, .section-cmd, .cta-prompt { font-size: 13px; }
+      h1.boot { font-size: clamp(1.9rem, 8.5vw, 2.5rem); max-width: none; }
+      .lede { font-size: 15px; }
+      .btn { width: 100%; justify-content: center; min-height: 44px; }
+      .cap-grid { grid-template-columns: 1fr; }
+      .boot-stats { grid-template-columns: 1fr; }
+      .boot-stat { border-right: none !important; border-bottom: 1px solid var(--rule); }
+      .boot-stat:last-child { border-bottom: none; }
+      .section { margin-top: 64px; }
+      .commit { padding: 20px 0; }
+      .log-row { grid-template-columns: 16px 1fr; gap: 12px; padding: 20px 0; }
+      .log-date { grid-column: 1 / -1; padding-top: 0; margin-bottom: -4px; }
+      .statusbar-left .sb-cell:nth-child(n+3), .statusbar-right .sb-cell:nth-child(n+2) { display: none; }
+      body::before { display: none; }
+      .ascii-mark { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .avail .dot, h1.boot .cursor { animation: none; }
+      body::before { display: none; }
+      * { transition: none !important; }
+    }
+  </style>
+</helmet>
+
+<div>
+  <!-- concept badge -->
+  <div style="position:fixed; z-index:80; right:14px; bottom:14px; font-family:var(--mono); font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--primary); background:rgba(16,18,22,0.85); border:1px solid var(--rule-2); padding:6px 11px; backdrop-filter:blur(6px);">Concept &middot; on-brand re-skin</div>
+
+  <!-- topbar -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="topbar-path"><span class="crumb">~</span><span class="sep">/</span><span class="crumb">andreas</span><span class="sep">/</span><span class="crumb">portfolio</span><span class="sep">/</span><span class="file">index.tsx</span></span>
+      <span class="topbar-right">
+        <span class="branch">main &middot; v2026.05</span>
+        <span class="avail"><span class="dot"></span> available &middot; short-term</span>
+      </span>
+    </div>
+  </header>
+
+  <main class="shell">
+    <div class="pane-grid">
+
+      <!-- file tree -->
+      <aside class="tree" aria-label="Site navigation">
+        <div class="tree-brand"><img src="assets/lt-mark-white.svg" alt="" /><b>LT.Solutions</b></div>
+        <p class="tree-label">workspace</p>
+        <div class="tree-folder">
+          <p class="tree-folder-name">portfolio/</p>
+          <div class="tree-files">
+            <a class="tree-file active" href="#hero">README.md <span class="tree-meta">↑</span></a>
+            <a class="tree-file" href="#capabilities">capabilities.ts</a>
+            <a class="tree-file" href="#shipped">shipped.log</a>
+            <a class="tree-file" href="#experience">experience.json</a>
+            <a class="tree-file" href="#credentials">credentials.yml</a>
+            <a class="tree-file" href="#contact">contact.sh</a>
+          </div>
+        </div>
+        <div class="tree-folder">
+          <p class="tree-folder-name">links/</p>
+          <div class="tree-files">
+            <a class="tree-file" href="/cdn-cgi/l/email-protection#d5b4bbb1a7b0b4a695b9a1fba6bab9a0a1bcbabba6">email →</a>
+            <a class="tree-file" href="https://www.linkedin.com/in/andreas-l-a-nyberg/" target="_blank" rel="noopener">linkedin →</a>
+            <a class="tree-file" href="https://lt.solutions" target="_blank" rel="noopener">lt.solutions →</a>
+            <a class="tree-file" href="andreas-nyberg-cv.pdf" download="">CV.pdf ↓</a>
+          </div>
+        </div>
+        <div class="tree-cli" aria-hidden="true">
+          <div class="row"><span>$</span><span>whoami</span></div>
+          <div class="row"><span>›</span><span class="amber">andreas</span></div>
+          <div class="row"><span>$</span><span>pwd</span></div>
+          <div class="row"><span>›</span><span>/london/uk</span></div>
+          <div class="row"><span>$</span><span>uptime</span></div>
+          <div class="row"><span>›</span><span>atlassian since 2010</span></div>
+        </div>
+      </aside>
+
+      <!-- editor -->
+      <section class="editor">
+        <div class="gutter" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span><span>31</span><span>32</span><span>33</span><span>34</span><span>35</span><span>36</span><span>37</span><span>38</span><span>39</span><span>40</span></div>
+
+        <div class="editor-body">
+
+          <!-- hero -->
+          <article id="hero" data-screen-label="Hero / README">
+            <p class="prompt-line"><span class="ps">andreas@london:~$</span> <span class="cmd">cat</span> <span class="arg">README.md</span></p>
+            <pre class="ascii-mark" aria-hidden="true"><span class="h">┌─</span> ITSM · ASSETS  <span class="h">─┐</span>
+<span class="h">│</span>  ANDREAS NYBERG   <span class="h">│</span>
+<span class="h">└─</span> ARCHITECT · SME <span class="h">─┘</span></pre>
+
+            <div class="hero-block">
+              <div>
+                <h1 class="boot">Service desks that <span class="italic">actually deploy</span> in a week, not a quarter<span class="cursor" aria-hidden="true"></span></h1>
+                <p class="lede"><span class="k">// </span>I&rsquo;m an <strong>ITSM architect and Atlassian SME</strong>, working with Atlassian since 2010 across enterprise service management. I design and ship <strong>Jira Service Management</strong> and <strong>Atlassian Assets</strong> platforms, CMDB and IT Asset Management schemas, and the automation and governance that keep them running. Through my consultancy <strong>LT.Solutions</strong> I deliver that work and build <strong>LaunchPad for JSM</strong> alongside it, a Forge Marketplace app live at <span class="k">v2.12</span>. Most recently, a <strong>4,500-user JSM rollout at Kantar Media</strong>.</p>
+                <div class="actions">
+                  <a href="andreas-nyberg-cv.pdf" class="btn btn-primary" download="">./download-cv.sh <span class="arr">↓</span></a>
+                  <a href="/cdn-cgi/l/email-protection#bedfd0daccdbdfcdfed2ca90cdd1d2cbcad7d1d0cd81cdcbdcd4dbddca83fdd1d0cdcbd2cad7d0d99b8c8edbd0cfcbd7ccc7" class="btn">open mail → <span class="__cf_email__" data-cfemail="d2b3bcb6a0b7b3a192bea6fca1bdbea7a6bbbdbca1">[email&#160;protected]</span> <span class="arr">→</span></a>
+                </div>
+                <dl class="meta-table">
+                  <dt>based</dt><dd>London, UK</dd>
+                  <dt>working</dt><dd>UK · EU · Remote</dd>
+                  <dt>open to</dt><dd>Short-term contract, advisory</dd>
+                  <dt>rate</dt><dd>On request</dd>
+                  <dt>stack</dt><dd>JSM · Forge · Assets · Rovo · Claude Code</dd>
+                </dl>
+              </div>
+              <div class="portrait-frame">
+                <span class="portrait-corner tl"></span><span class="portrait-corner tr"></span><span class="portrait-corner bl"></span><span class="portrait-corner br"></span>
+                <img src="assets/andreas.jpeg" alt="Portrait of Andreas Nyberg" loading="eager" />
+              </div>
+            </div>
+
+            <p class="prompt-line"><span class="ps">andreas@london:~$</span> <span class="cmd">sysinfo</span> <span class="arg">--track-record</span></p>
+            <div class="boot-stats">
+              <div class="boot-stat"><span class="boot-stat-k">working with atlassian</span><span class="boot-stat-v">since <span class="italic">2010</span></span><span class="boot-stat-sub">Enterprise service management</span></div>
+              <div class="boot-stat"><span class="boot-stat-k">jsm users rolled out</span><span class="boot-stat-v">4,500</span><span class="boot-stat-sub">Kantar Media · global 24/7</span></div>
+              <div class="boot-stat"><span class="boot-stat-k">cmdb schemas shipped</span><span class="boot-stat-v"><span class="italic">13</span></span><span class="boot-stat-sub">In LaunchPad for JSM v2.12</span></div>
+              <div class="boot-stat"><span class="boot-stat-k">marketplace</span><span class="boot-stat-v">v2.12</span><span class="boot-stat-sub">Atlassian Forge · live</span></div>
+            </div>
+
+            <section class="clients" aria-label="Selected clients">
+              <p class="clients-label">clients shipped for</p>
+              <p class="clients-list"><span class="name">Kantar Media</span><span class="name">Cancer Research UK</span><span class="name">Endeavor Streaming</span><span class="name">Zuora / Zephr</span><span class="name">ITV</span><span class="name">NBA</span><span class="name">BT</span></p>
+            </section>
+          </article>
+
+          <!-- capabilities -->
+          <article id="capabilities" class="section" data-screen-label="Capabilities">
+            <p class="section-cmd"><span class="ps">andreas@london:~$</span> <span class="cmd">ls</span> <span class="arg">capabilities/</span></p>
+            <p class="section-out"><span class="count">6</span> entries · sorted by depth</p>
+            <h2 class="section-title">Where I do my <span class="italic">best</span> work.</h2>
+            <div class="cap-grid">
+              <div class="cap"><span class="cap-num">01</span><span class="cap-name">JSM and Atlassian Assets architecture</span><span class="cap-desc">CMDB and IT Asset Management design, object schema modelling, asset lifecycle and governance, ServiceNow to JSM migrations, multi-region service desk models, automation-first workflows.</span></div>
+              <div class="cap"><span class="cap-num">02</span><span class="cap-name">Forge app and Marketplace product</span><span class="cap-desc">Bootstrapped LaunchPad to v2.12 on Atlassian Marketplace. Excel import pipeline, Automation Rule Management API, companion operational tooling.</span></div>
+              <div class="cap"><span class="cap-num">03</span><span class="cap-name">Accelerated, governed delivery</span><span class="cap-desc">Human-led architecture and governance, with AI-assisted engineering (Claude Code, Codex, Rovo) used to shorten build, QA, and documentation cycles. Decisions stay human, execution gets faster.</span></div>
+              <div class="cap"><span class="cap-num">04</span><span class="cap-name">Enterprise platform migrations</span><span class="cap-desc">Zendesk and ServiceNow to JSM. Microsoft Entra ID, Intune, Azure DevOps integrations. Knowledge transfer across LATAM, EMEA, APAC.</span></div>
+              <div class="cap"><span class="cap-num">05</span><span class="cap-name">Governance and compliance</span><span class="cap-desc">Built the ISO 27001 documentation hub at Datasparq, praised by auditors at final certification. Asset-to-risk and control mapping, framework alignment across ISO 27001 and NIST CSF, AI governance and SaaS cost optimisation.</span></div>
+              <div class="cap"><span class="cap-num">06</span><span class="cap-name">Support leadership at scale</span><span class="cap-desc">Built and led L2 and global support teams across UK, NZ, and EMEA for clients including News Corp, NBA, EFL, UFC, and BT.</span></div>
+            </div>
+            <div class="pkg">
+              <div class="pkg-row"><span class="pkg-label">atlassian</span><div class="pkg-chips"><span class="chip">Jira</span><span class="chip">JSM</span><span class="chip">Confluence</span><span class="chip">Jira Assets (JAM)</span><span class="chip">IT Asset Management</span><span class="chip">Opsgenie</span><span class="chip">Forge SDK</span><span class="chip">Rovo</span><span class="chip">Marketplace</span></div></div>
+              <div class="pkg-row"><span class="pkg-label">ai &amp; delivery</span><div class="pkg-chips"><span class="chip">AI-assisted engineering</span><span class="chip">Claude Code</span><span class="chip">Codex</span><span class="chip">Rovo agent design</span><span class="chip">LLM tooling</span><span class="chip">AI adoption strategy</span></div></div>
+              <div class="pkg-row"><span class="pkg-label">integration &amp; itsm</span><div class="pkg-chips"><span class="chip">REST APIs</span><span class="chip">Webhooks</span><span class="chip">Azure DevOps</span><span class="chip">MDM / device enrolment</span><span class="chip">Microsoft Entra ID</span><span class="chip">Intune</span><span class="chip">Service desk design</span><span class="chip">SLA design</span><span class="chip">ITIL 4</span></div></div>
+              <div class="pkg-row"><span class="pkg-label">governance &amp; product</span><div class="pkg-chips"><span class="chip">ISO 27001</span><span class="chip">NIST CSF</span><span class="chip">SOC 2</span><span class="chip">AI governance</span><span class="chip">SaaS cost optimisation</span><span class="chip">Product roadmap</span><span class="chip">B2B go-to-market</span><span class="chip">SC cleared (lapsed)</span></div></div>
+            </div>
+          </article>
+
+          <!-- shipped -->
+          <article id="shipped" class="section" data-screen-label="Shipped">
+            <p class="section-cmd"><span class="ps">andreas@london:~$</span> <span class="cmd">git log</span> <span class="arg">--shipped --oneline</span></p>
+            <p class="section-out"><span class="count">4</span> deliveries · production, countable</p>
+            <h2 class="section-title">Shipped, in production, <span class="italic">countable</span>.</h2>
+            <div class="commits">
+              <article class="commit">
+                <span class="commit-hash"><span class="verb">feat</span> a4c1f0e</span>
+                <div class="commit-body">
+                  <p class="commit-title">LaunchPad for Jira Service Management</p>
+                  <p class="commit-meta">Let&rsquo;s Talk Solutions Ltd <span class="dot">·</span> Mar 2025 – present <span class="dot">·</span> live product</p>
+                  <p class="commit-desc">Forge Marketplace app delivering reusable, governed CMDB schemas and deployment accelerators for Jira Assets. <strong>13 production CMDB schemas</strong> under one subscription, an Excel import pipeline, an Automation Rule Management API, and companion operational tooling. Free for up to 10 users. Live at v2.12.</p>
+                  <div class="commit-links"><a class="commit-link primary" href="https://marketplace.atlassian.com/apps/1238067/launchpad-for-jsm" target="_blank" rel="noopener">View on Atlassian Marketplace <span aria-hidden="true">↗</span></a><a class="commit-link" href="https://lt.solutions" target="_blank" rel="noopener">lt.solutions <span aria-hidden="true">↗</span></a></div>
+                </div>
+                <div class="commit-stack"><span class="stack-chip">Forge</span><span class="stack-chip">Node.js</span><span class="stack-chip">React</span><span class="stack-chip">Marketplace</span><span class="stack-chip">AI-assisted delivery</span></div>
+              </article>
+              <article class="commit">
+                <span class="commit-hash"><span class="verb">feat</span> 7d9e2b1</span>
+                <div class="commit-body">
+                  <p class="commit-title">Kantar Media JSM rollout · 4,500 users, global 24/7</p>
+                  <p class="commit-meta">Kantar Media <span class="dot">·</span> Mar – Sep 2025 <span class="dot">·</span> technical architect</p>
+                  <p class="commit-desc">Built the JSM MVP for 500 initial users across HR, IT, SOC, and NOC ahead of a <strong>4,500-user global rollout</strong>. Designed a CMDB covering location hierarchies, workstations, network gear, and server infrastructure. Integrated JSM with Azure DevOps and delivered knowledge transfer for LATAM, EMEA, and APAC stakeholders supporting a 24/7 desk.</p>
+                </div>
+                <div class="commit-stack"><span class="stack-chip">JSM</span><span class="stack-chip">Assets</span><span class="stack-chip">Azure DevOps</span><span class="stack-chip">CMDB</span><span class="stack-chip">Global rollout</span></div>
+              </article>
+              <article class="commit">
+                <span class="commit-hash"><span class="verb">refactor</span> 3f1a8cc</span>
+                <div class="commit-body">
+                  <p class="commit-title">ServiceNow → JSM migration · Perceptive Informatics</p>
+                  <p class="commit-meta">Valiantys <span class="dot">·</span> Nov 2025 – Mar 2026 <span class="dot">·</span> senior consultant</p>
+                  <p class="commit-desc">Full platform migration off ServiceNow. Designed the Assets CMDB schema, rebuilt request workflows, implemented C-SAT and NPS reporting. Parallel engagements at <strong>Cancer Research UK</strong> (JSM and Assets implementation), <strong>System C</strong> (healthcare IT discovery, co-authored solution design), and <strong>APAX Finance</strong> (email-based support to structured JSM).</p>
+                </div>
+                <div class="commit-stack"><span class="stack-chip">ServiceNow migration</span><span class="stack-chip">Assets CMDB</span><span class="stack-chip">C-SAT / NPS</span><span class="stack-chip">Entra ID</span><span class="stack-chip">Intune</span></div>
+              </article>
+              <article class="commit">
+                <span class="commit-hash"><span class="verb">chore</span> b8e0f17</span>
+                <div class="commit-body">
+                  <p class="commit-title">ISO 27001 Confluence documentation hub</p>
+                  <p class="commit-meta">Datasparq <span class="dot">·</span> Jan 2023 – Jan 2025 <span class="dot">·</span> internal IT &amp; data service manager</p>
+                  <p class="commit-desc">Built the <strong>ISO 27001 documentation hub</strong> in Confluence end to end. Praised by external auditors at the final certification audit. Alongside it: migrated internal support from Zendesk to JSM, and designed GCP and Atlassian cost-optimisation automations via webhooks and APIs.</p>
+                </div>
+                <div class="commit-stack"><span class="stack-chip">ISO 27001</span><span class="stack-chip">Confluence</span><span class="stack-chip">JSM</span><span class="stack-chip">GCP</span><span class="stack-chip">Cost ops</span></div>
+              </article>
+            </div>
+          </article>
+
+          <!-- experience -->
+          <article id="experience" class="section" data-screen-label="Experience">
+            <p class="section-cmd"><span class="ps">andreas@london:~$</span> <span class="cmd">tail</span> <span class="arg">-f experience.log</span></p>
+            <p class="section-out"><span class="count">7</span> roles · 2011 → present</p>
+            <h2 class="section-title">The path here, traced through <span class="italic">actual</span> roles.</h2>
+            <div class="log">
+              <div class="log-row current"><span class="log-date"><strong>● Mar 2025</strong><br />→ Present</span><span class="log-bullet"></span><div class="log-body"><p class="log-role">Founder &amp; Director</p><p class="log-company">Let&rsquo;s Talk Solutions Ltd <span class="at">@</span> London</p><p class="log-desc">Founded LT.Solutions as a Jira Service Management and Atlassian consultancy focused on ITSM, Jira Assets (JAM), automation, and operational governance. Alongside consultancy delivery, designed and bootstrapped <strong>LaunchPad for JSM</strong> to v2.12.0: 13 production CMDB schemas, an Excel import pipeline, and an Automation Rule Management API, all on a single subscription. Build and QA accelerated through AI-assisted engineering workflows, with human-led architecture and review.</p></div></div>
+              <div class="log-row"><span class="log-date">Nov 2025<br />→ Mar 2026</span><span class="log-bullet"></span><div class="log-body"><p class="log-role">Senior Consultant</p><p class="log-company">Valiantys, UK <span class="at">@</span> Remote</p><p class="log-desc">Clients: <strong>Perceptive Informatics</strong> (ServiceNow to JSM migration, Assets CMDB design, C-SAT and NPS reporting), <strong>Cancer Research UK</strong> (JSM and Assets implementation), <strong>System C</strong> (healthcare IT discovery, co-authored solution design), <strong>APAX Finance</strong> (email-based support to structured JSM workflows). Microsoft Entra ID and Intune CMDB integrations across engagements.</p></div></div>
+              <div class="log-row"><span class="log-date">Mar 2025<br />→ Sep 2025</span><span class="log-bullet"></span><div class="log-body"><p class="log-role">Technical Architect / Atlassian SME</p><p class="log-company">Kantar Media <span class="at">@</span> London</p><p class="log-desc">Built JSM MVP for 500 initial users across HR, IT, SOC, and NOC ahead of a <strong>4,500-user global rollout</strong>. Designed CMDB covering location hierarchies, workstations, network gear, and server infrastructure. Integrated JSM with Azure DevOps. Delivered knowledge transfer for LATAM, EMEA, and APAC stakeholders supporting a global 24/7 service desk.</p></div></div>
+              <div class="log-row passive"><span class="log-date">Jan 2023<br />→ Jan 2025</span><span class="log-bullet"></span><div class="log-body"><p class="log-role">Data Service &amp; Internal IT Manager</p><p class="log-company">Datasparq <span class="at">@</span> London</p><p class="log-desc">Migrated internal support from Zendesk to JSM. Designed GCP and Atlassian cost-optimisation automations via webhooks and APIs. Administered the Atlassian Suite, Google Workspace, GitHub, GCP, and Azure. Built the <strong>ISO 27001 documentation hub</strong> in Confluence; praised by external auditors at final certification.</p></div></div>
+              <div class="log-row passive"><span class="log-date">Jul 2021<br />→ Jan 2023</span><span class="log-bullet"></span><div class="log-body"><p class="log-role">Global Support Manager</p><p class="log-company">Zephr (Zuora) <span class="at">@</span> London</p><p class="log-desc">Built and scaled B2B technical support teams in the UK and New Zealand for tier-1 clients including <strong>WHICH?, New York Post, and News Corp Australia</strong>. Designed escalation workflows across Jira, PagerDuty, and Slack. Led company-wide Jira administration and workflow optimisation.</p></div></div>
+              <div class="log-row passive"><span class="log-date">Nov 2018<br />→ Nov 2020</span><span class="log-bullet"></span><div class="log-body"><p class="log-role">L2 Support Manager</p><p class="log-company">Endeavor Streaming <span class="at">@</span> London</p><p class="log-desc">Built and led Endeavor&rsquo;s first UK-based L2 support department for streaming clients including <strong>NBA, EFL, OSN, EuroLeague, FEI, UFC, and BT Box Office</strong>. Developed proprietary troubleshooting tooling that reduced developer escalations. Established a 24/5 global support model.</p></div></div>
+              <div class="log-row passive"><span class="log-date">Oct 2011<br />→ Nov 2018</span><span class="log-bullet"></span><div class="log-body"><p class="log-role">Technical Support Manager / CS Manager</p><p class="log-company">NeuLion &amp; Saffron Digital <span class="at">@</span> London</p><p class="log-desc"><strong>NeuLion (2012 – 2018):</strong> Technical Support Manager for streaming platforms used by ITV, Carrefour, and BT TV; led the onboarding of <strong>60+ EFL football clubs</strong> onto a new VOD platform. <strong>Saffron Digital (2011 – 2012):</strong> built support teams for KDDI Videopass and ITV Essentials; led CRM implementations and cost-saving workflow design.</p></div></div>
+            </div>
+          </article>
+
+          <!-- credentials -->
+          <article id="credentials" class="section" data-screen-label="Credentials">
+            <p class="section-cmd"><span class="ps">andreas@london:~$</span> <span class="cmd">cat</span> <span class="arg">credentials.yml</span></p>
+            <p class="section-out"><span class="count">6</span> entries · formal + practical</p>
+            <h2 class="section-title">Certifications and <span class="italic">ongoing</span> learning.</h2>
+            <pre class="json-block"><span class="c"># credentials.yml — formal training plus the things that actually move work</span>
+<span class="k">certifications:</span>
+  <span class="k">-</span> <span class="k">title:</span> <span class="s">"ITIL® 4 · Introduction to Service Management"</span>
+    <span class="k">issuer:</span> <span class="s">"LinkedIn Learning"</span>
+    <span class="k">date:</span>   <span class="s">"2025-02"</span>
+    <span class="k">status:</span> <span class="p">passed</span>
+
+  <span class="k">-</span> <span class="k">title:</span> <span class="s">"Agile Project Management with Jira Cloud"</span>
+    <span class="k">issuer:</span> <span class="s">"Atlassian University"</span>
+    <span class="k">date:</span>   <span class="s">"2025-02"</span>
+    <span class="k">status:</span> <span class="p">passed</span>
+
+  <span class="k">-</span> <span class="k">title:</span> <span class="s">"Jira Administration: Automation"</span>
+    <span class="k">issuer:</span> <span class="s">"LinkedIn Learning"</span>
+    <span class="k">date:</span>   <span class="s">"2025-02"</span>
+    <span class="k">status:</span> <span class="p">passed</span>
+
+  <span class="k">-</span> <span class="k">title:</span> <span class="s">"IT Service Desk: Service Management"</span>
+    <span class="k">issuer:</span> <span class="s">"LinkedIn Learning"</span>
+    <span class="k">date:</span>   <span class="s">"2025-02"</span>
+    <span class="k">status:</span> <span class="p">passed</span>
+
+  <span class="k">-</span> <span class="k">title:</span> <span class="s">"Git Essential Training"</span>
+    <span class="k">issuer:</span> <span class="s">"LinkedIn Learning"</span>
+    <span class="k">date:</span>   <span class="s">"2025-02"</span>
+    <span class="k">status:</span> <span class="p">passed</span>
+
+<span class="k">practical_experience:</span>
+  <span class="k">-</span> <span class="k">title:</span> <span class="s">"ISO 27001 implementation &amp; IT security compliance"</span>
+    <span class="k">evidence:</span> <span class="s">"praised by external auditors @ Datasparq, 2025"</span>
+    <span class="k">status:</span> <span class="p">verified</span>
+
+  <span class="k">-</span> <span class="k">title:</span> <span class="s">"SC clearance"</span>
+    <span class="k">status:</span> <span class="b">lapsed</span></pre>
+          </article>
+
+          <!-- contact -->
+          <article id="contact" class="cta" data-screen-label="Contact">
+            <p class="cta-prompt"><span class="ps">andreas@london:~$</span> <span class="cmd">./contact.sh --open-engagement</span></p>
+            <h2 class="cta-title">If your <span class="italic">JSM</span> is stuck, that is the kind of week I want to have.</h2>
+            <p class="cta-desc">Short-term contracts, advisory days, or a discovery call. Atlassian platforms, ITSM and Assets architecture, CMDB design, operational governance, and AI-assisted delivery. London-based, working with teams across the UK, EU, and remote.</p>
+            <div class="actions">
+              <a href="/cdn-cgi/l/email-protection#64050a00160105172408104a170b0811100d0b0a175b1711060e01071059270b0a171108100d0a03415654010a15110d161d" class="btn btn-primary"><span class="__cf_email__" data-cfemail="7a1b141e081f1b093a160e540915160f0e13151409">[email&#160;protected]</span> <span class="arr">→</span></a>
+              <a href="https://www.linkedin.com/in/andreas-l-a-nyberg/" class="btn" target="_blank" rel="noopener">linkedin.com/andreas <span class="arr">↗</span></a>
+              <a href="andreas-nyberg-cv.pdf" class="btn" download="">CV.pdf <span class="arr">↓</span></a>
+            </div>
+          </article>
+
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="statusbar">
+    <div class="statusbar-inner">
+      <div class="statusbar-left">
+        <span class="sb-cell"><span class="amber">●</span> <span class="v">main</span></span>
+        <span class="sb-cell"><span class="k">utf-8</span></span>
+        <span class="sb-cell"><span class="k">lf</span></span>
+        <span class="sb-cell"><span class="k">© 2026</span> <span class="v">Let&rsquo;s Talk Solutions Ltd</span></span>
+      </div>
+      <div class="statusbar-right">
+        <span class="sb-cell"><a href="/cdn-cgi/l/email-protection#04656a60766165774468702a776b6871706d6b6a77"><span class="__cf_email__" data-cfemail="51303f3523343022113d257f223e3d2425383e3f22">[email&#160;protected]</span></a></span>
+        <span class="sb-cell"><a href="https://www.linkedin.com/in/andreas-l-a-nyberg/" target="_blank" rel="noopener">/in/andreas-l-a-nyberg</a></span>
+        <span class="sb-cell"><a href="https://lt.solutions" target="_blank" rel="noopener">lt.solutions ↗</a></span>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    const root = this.el || document;
+    const scope = root.querySelector ? root : document;
+    const sections = scope.querySelectorAll('article[id]');
+    const treeLinks = scope.querySelectorAll('.tree-file[href^="#"]');
+    const map = {};
+    treeLinks.forEach(a => { map[a.getAttribute('href').slice(1)] = a; });
+    this._obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        treeLinks.forEach(a => a.classList.remove('active'));
+        if (map[e.target.id]) map[e.target.id].classList.add('active');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    sections.forEach(s => this._obs.observe(s));
+
+    const order = ['hero','capabilities','shipped','experience','credentials','contact'];
+    let idx = 0;
+    this._onKey = (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key === 'j') { idx = Math.min(order.length - 1, idx + 1); const el = document.getElementById(order[idx]); if (el) el.scrollIntoView({ behavior: 'smooth' }); }
+      if (e.key === 'k') { idx = Math.max(0, idx - 1); const el = document.getElementById(order[idx]); if (el) el.scrollIntoView({ behavior: 'smooth' }); }
+    };
+    document.addEventListener('keydown', this._onKey);
+  }
+  componentWillUnmount() {
+    if (this._obs) this._obs.disconnect();
+    if (this._onKey) document.removeEventListener('keydown', this._onKey);
+  }
+}
+</script>
+</body>
+</html>

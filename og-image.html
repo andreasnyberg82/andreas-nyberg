@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { background:#0b0c0f; }
+  .og {
+    position:relative; width:1200px; height:630px; overflow:hidden;
+    background:#101216; color:#F6F2E9;
+    font-family:'Inter',system-ui,sans-serif;
+    border:1px solid rgba(246,242,233,0.09);
+  }
+  .og::before { /* grain */
+    content:""; position:absolute; inset:0; pointer-events:none; z-index:3;
+    background:repeating-linear-gradient(0deg, rgba(246,242,233,0.015) 0, rgba(246,242,233,0.015) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode:overlay;
+  }
+  .og::after { /* red glow */
+    content:""; position:absolute; top:-160px; right:-120px; width:620px; height:620px; z-index:0;
+    background:radial-gradient(circle, rgba(229,69,94,0.16), transparent 62%);
+  }
+  .pad { position:absolute; inset:0; z-index:2; padding:52px 60px; display:flex; flex-direction:column; }
+
+  /* top bar */
+  .top { display:flex; align-items:center; justify-content:space-between; }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .brand svg { width:30px; height:30px; display:block; }
+  .brand b { font-size:18px; font-weight:600; letter-spacing:-0.01em; }
+  .avail { font-family:'JetBrains Mono',monospace; font-size:14px; color:rgba(246,242,233,0.6); display:flex; align-items:center; gap:9px; }
+  .avail .dot { width:9px; height:9px; border-radius:50%; background:#4FBF8B; box-shadow:0 0 12px 1px rgba(79,191,139,0.5); }
+
+  /* prompt */
+  .prompt { font-family:'JetBrains Mono',monospace; font-size:16px; color:rgba(246,242,233,0.4); margin-top:54px; }
+  .prompt .ps { color:#4FBF8B; }
+  .prompt .cmd { color:#F6F2E9; }
+  .prompt .arg { color:#E5455E; }
+
+  /* headline */
+  .h { font-size:70px; line-height:1.04; font-weight:700; letter-spacing:-0.035em; margin-top:20px; max-width:15ch; }
+  .h .r { font-style:italic; font-weight:600; color:#E5455E; }
+  .cursor { display:inline-block; width:0.5em; height:0.82em; vertical-align:-0.02em; background:#E5455E; margin-left:0.08em; }
+
+  /* spacer + meta */
+  .spacer { flex:1; }
+  .who { font-family:'JetBrains Mono',monospace; font-size:17px; color:rgba(246,242,233,0.82); letter-spacing:0.01em; }
+  .who .sep { color:rgba(246,242,233,0.28); margin:0 12px; }
+  .who .k { color:#E5455E; }
+  .meta { font-family:'JetBrains Mono',monospace; font-size:14px; color:rgba(246,242,233,0.42); margin-top:14px; display:flex; align-items:center; gap:0; }
+  .meta .d { color:#E5455E; margin:0 10px; }
+
+  /* portrait */
+  .port { position:absolute; z-index:2; right:60px; top:118px; width:250px; height:312px; }
+  .port img { width:100%; height:100%; object-fit:cover; object-position:50% 28%; filter:saturate(1.03) contrast(1.03); border:1px solid rgba(246,242,233,0.14); }
+  .port .tag { position:absolute; left:10px; bottom:10px; font-family:'JetBrains Mono',monospace; font-size:11px; color:#E5455E; letter-spacing:0.04em; }
+  .corner { position:absolute; width:16px; height:16px; border:1.5px solid #E5455E; }
+  .corner.tl { top:-4px; left:-4px; border-right:none; border-bottom:none; }
+  .corner.tr { top:-4px; right:-4px; border-left:none; border-bottom:none; }
+  .corner.bl { bottom:-4px; left:-4px; border-right:none; border-top:none; }
+  .corner.br { bottom:-4px; right:-4px; border-left:none; border-top:none; }
+</style>
+</head>
+<body>
+<div class="og">
+  <div class="pad">
+    <div class="top">
+      <div class="brand">
+        <svg viewBox="0 0 468 468" xmlns="http://www.w3.org/2000/svg"><rect x="363.602" y="278.129" width="36.0946" height="39.2608" rx="6.22605" fill="#E5455E"/><path d="M68.2578 64.3429C68.2578 63.6552 68.8153 63.0977 69.503 63.0977H111.508C112.196 63.0977 112.753 63.6552 112.753 64.3429V277.304C112.753 277.992 113.311 278.55 113.999 278.55H222.161C222.849 278.55 223.407 279.107 223.407 279.795V316.531C223.407 317.218 222.849 317.776 222.161 317.776H69.503C68.8153 317.776 68.2578 317.218 68.2578 316.531V64.3429Z" fill="#F6F2E9"/><path d="M278.323 190.822C278.323 190.134 277.765 189.576 277.077 189.576H204.628C203.94 189.576 203.383 189.019 203.383 188.331V149.839C203.383 149.151 203.94 148.594 204.628 148.594H392.414C393.102 148.594 393.66 149.151 393.66 149.839V188.331C393.66 189.019 393.102 189.576 392.414 189.576H360.873H321.721C321.034 189.576 320.476 190.134 320.476 190.822V403.198C320.476 403.885 319.919 404.443 319.231 404.443H279.568C278.88 404.443 278.323 403.885 278.323 403.198V190.822Z" fill="#F6F2E9"/></svg>
+        <b>Andreas Nyberg</b>
+      </div>
+      <div class="avail"><span class="dot"></span> available · short-term</div>
+    </div>
+
+    <div class="prompt"><span class="ps">andreas@london:~$</span> <span class="cmd">cat</span> <span class="arg">README.md</span></div>
+    <div class="h">Service desks that <span class="r">actually deploy</span> in a week, not a quarter<span class="cursor"></span></div>
+
+    <div class="spacer"></div>
+
+    <div class="who">ITSM architect <span class="k">&amp;</span> Atlassian SME<span class="sep">·</span>Founder, LT.Solutions</div>
+    <div class="meta">JSM · Assets · CMDB · Forge<span class="d">·</span>LaunchPad for JSM v2.12<span class="d">·</span>London &amp; remote</div>
+  </div>
+
+  <div class="port">
+    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+    <img src="andreas.jpeg" alt="Andreas Nyberg">
+    <span class="tag">// London 51.5074°N</span>
+  </div>
+</div>
+</body>
+</html>
