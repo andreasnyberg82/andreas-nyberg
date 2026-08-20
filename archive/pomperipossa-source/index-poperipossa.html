@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#15120f">
+  <meta name="description" content="Pomperipossa i skogen. En liten sagosida, läst av Andreas Nyberg.">
+  <title>Pomperipossa i skogen | Andreas Nyberg</title>
+  <style>
+    :root {
+      --bg: #0e1210;
+      --paper: #f6edd9;
+      --ink: #30251d;
+      --muted: #806d5c;
+      --gold: #dfaa4d;
+      --panel: rgba(255,255,255,.055);
+      --border: rgba(255,255,255,.1);
+      --shadow: 0 30px 90px rgba(0,0,0,.45);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: #f8f2e8;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(110,91,45,.22), transparent 34rem),
+        linear-gradient(180deg, #111914 0%, #0e1210 65%, #0a0d0b 100%);
+      font-family: Georgia, "Times New Roman", serif;
+      min-height: 100vh;
+    }
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0 80px;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+      gap: 54px;
+      align-items: center;
+      min-height: 86vh;
+    }
+    .cover-wrap {
+      position: relative;
+    }
+    .cover {
+      display: block;
+      width: 100%;
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .eyebrow {
+      color: var(--gold);
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      font: 700 12px/1.4 system-ui, sans-serif;
+      margin: 0 0 14px;
+    }
+    h1 {
+      font-size: clamp(48px, 7vw, 92px);
+      line-height: .93;
+      margin: 0;
+      letter-spacing: -.04em;
+      text-wrap: balance;
+    }
+    .subtitle {
+      margin: 26px 0 0;
+      color: #ddcfbd;
+      font-size: clamp(19px, 2vw, 25px);
+      line-height: 1.55;
+      max-width: 34rem;
+    }
+    .credit {
+      margin-top: 20px;
+      color: #bda98c;
+      font: 600 14px/1.5 system-ui, sans-serif;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+    button, .button {
+      appearance: none;
+      border: 0;
+      text-decoration: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 14px 20px;
+      font: 700 14px/1 system-ui, sans-serif;
+    }
+    .primary {
+      background: var(--gold);
+      color: #2b2014;
+    }
+    .secondary {
+      background: var(--panel);
+      color: #f8f2e8;
+      border: 1px solid var(--border);
+    }
+    .story {
+      width: min(760px, 100%);
+      margin: 90px auto 0;
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: 28px;
+      padding: clamp(28px, 6vw, 72px);
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    .story:before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(75,51,26,.17);
+      border-radius: 20px;
+      pointer-events: none;
+    }
+    .story h2 {
+      margin: 0 0 8px;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1;
+      letter-spacing: -.03em;
+    }
+    .story .byline {
+      color: var(--muted);
+      font: 600 13px/1.5 system-ui, sans-serif;
+      margin-bottom: 36px;
+    }
+    .story p {
+      font-size: clamp(18px, 2vw, 22px);
+      line-height: 1.75;
+      margin: 0 0 1.15em;
+    }
+    .story .magic {
+      text-align: center;
+      color: #91651d;
+      font-weight: 800;
+      letter-spacing: .14em;
+      margin: 2.2em 0;
+    }
+    .story .the-end {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 800;
+      margin-top: 2.5em;
+    }
+    .notice {
+      margin: 30px auto 0;
+      width: min(760px, 100%);
+      text-align: center;
+      color: #8d9a90;
+      font: 500 12px/1.6 system-ui, sans-serif;
+    }
+    footer {
+      text-align: center;
+      color: #748078;
+      font: 500 12px/1.5 system-ui, sans-serif;
+      margin-top: 56px;
+    }
+    @media (max-width: 820px) {
+      .shell { padding-top: 18px; }
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 34px;
+        min-height: auto;
+      }
+      .cover-wrap { order: 2; }
+      .hero-copy { order: 1; padding: 28px 4px 0; }
+      h1 { max-width: 8ch; }
+      .story { margin-top: 56px; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .cover { animation: float 7s ease-in-out infinite; }
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="cover-wrap">
+        <img class="cover" src="cover.png" alt="Omslag till Pomperipossa i skogen">
+      </div>
+
+      <div class="hero-copy">
+        <p class="eyebrow">En liten saga</p>
+        <h1 id="page-title">Pomperipossa i skogen</h1>
+        <p class="subtitle">En magisk berättelse om mod, vänskap och en väldigt sur trollpacka.</p>
+        <p class="credit">Läst av Andreas Nyberg</p>
+
+        <div class="actions">
+          <a class="button primary" href="#sagan">Läs sagan</a>
+          <button class="secondary" id="speakButton" type="button">Läs högt</button>
+        </div>
+      </div>
+    </section>
+
+    <article class="story" id="sagan">
+      <h2>Pomperipossa i skogen</h2>
+      <p class="byline">En saga läst av Andreas Nyberg</p>
+      <p>Barnen stod alldeles stilla.</p>
+<p>Pomperipossa kisade på dem med sina små svarta ögon.</p>
+<p>"Kom in, kom in", sa hon med sin allra vänligaste röst.</p>
+<p>Men den var inte särskilt vänlig.</p>
+<p>Barnen tittade på varandra. De hette Maja och Leo, och Maja viskade:</p>
+<p>"Jag tror att hon tänker äta upp oss."</p>
+<p>"Det tror jag också", viskade Leo.</p>
+<p>"Jag hör er!" skrek Pomperipossa.</p>
+<p>Hon lyfte sin krokiga trollstav.</p>
+<p>"HOKUS POKUS, KASTRULL OCH KLOSS! BLI TILL TVÅ SMÅ..."</p>
+<p>Men precis då nös Leo.</p>
+<p>"AAATSCHOO!"</p>
+<p>Pomperipossa blev så överraskad att trollstaven flög ur handen på henne och landade mitt på golvet.</p>
+<p>Alla tre stirrade på den.</p>
+<p>Sedan kastade sig alla tre efter den.</p>
+<p>"MIN!" skrek Pomperipossa.</p>
+<p>Maja var snabbast.</p>
+<p>Hon tog trollstaven och sprang runt bordet.</p>
+<p>"Ge hit den!" vrålade Pomperipossa och jagade efter.</p>
+<p>Runt bordet sprang de. Ett varv. Två varv. Tre varv.</p>
+<p>Pomperipossa blev rödare och rödare i ansiktet.</p>
+<p>"Leo!" ropade Maja. "Hur gör man magi?"</p>
+<p>"Hur ska jag veta det?"</p>
+<p>"Prova något!"</p>
+<p>Leo funderade så det knakade.</p>
+<p>Sedan ropade han:</p>
+<p>"HOKUS POKUS, KASTRULL OCH KLOSS! POMPERIPOSSA BLIR EN..."</p>
+<p>Han tittade sig omkring.</p>
+<p>På bordet stod en skål med kanelbullar.</p>
+<p>"...KANELBULLE!"</p>
+<p class="magic">POFF!</p>
+<p>Rök fyllde hela rummet.</p>
+<p>När den försvann var Pomperipossa borta.</p>
+<p>Mitt på golvet låg istället en enorm kanelbulle.</p>
+<p>Den hade två små arga ögon.</p>
+<p>"Jag ska förvandla er till paddor!" pep kanelbullen.</p>
+<p>Maja och Leo började skratta.</p>
+<p>"Det där var faktiskt ganska bra", sa Maja.</p>
+<p>"Tack", sa Leo stolt.</p>
+<p>Men då började hela huset skaka.</p>
+<p>Koppar och tallrikar hoppade på hyllorna. Golvet knakade.</p>
+<p>"Vad händer?" ropade Maja.</p>
+<p>Kanelbullen slutade plötsligt vara arg.</p>
+<p>"Åh nej", pep Pomperipossa.</p>
+<p>"Vadå åh nej?"</p>
+<p>"Mitt hus är förtrollat. Om jag inte är människa längre försvinner magin som håller det uppe."</p>
+<p>Ett stort KRAAAK! hördes från taket.</p>
+<p>"Spring!" skrek Leo.</p>
+<p>Maja stoppade trollstaven i fickan, Leo tog kanelbullen under armen och de rusade ut genom dörren.</p>
+<p>Bakom dem började Pomperipossas hus sjunka ner i marken.</p>
+<p>Först försvann trappan. Sedan dörren. Sedan fönstren.</p>
+<p>Till sist syntes bara skorstenen.</p>
+<p class="magic">POFF!</p>
+<p>Och den var också borta.</p>
+<p>Skogen blev alldeles tyst.</p>
+<p>Maja tittade på kanelbullen.</p>
+<p>"Vad gör vi med henne nu?"</p>
+<p>"Ät mig INTE!" pep Pomperipossa.</p>
+<p>"Jag tänkte faktiskt precis föreslå det", sa Leo.</p>
+<p>"LEO!"</p>
+<p>"Jag skojar."</p>
+<p>De satte Pomperipossa på en sten.</p>
+<p>Maja tog fram trollstaven.</p>
+<p>"Jag kan förvandla dig tillbaka", sa hon. "Men då måste du lova en sak."</p>
+<p>"Vadå?"</p>
+<p>"Att aldrig mer förvandla barn som kommer vilse i skogen."</p>
+<p>Pomperipossa muttrade.</p>
+<p>"Och inga vuxna heller", sa Leo.</p>
+<p>Pomperipossa muttrade ännu mer.</p>
+<p>"Och inga hundar."</p>
+<p>"Men för tusan!"</p>
+<p>"Lovar du?"</p>
+<p>Pomperipossa suckade så djupt som en kanelbulle över huvud taget kan sucka.</p>
+<p>"Jag lovar."</p>
+<p>Maja höjde trollstaven.</p>
+<p>"HOKUS POKUS, KASTRULL OCH KLOSS! LÅT POMPERIPOSSA BLI..."</p>
+<p>Hon stannade.</p>
+<p>"...sig själv igen."</p>
+<p class="magic">POFF!</p>
+<p>Där stod Pomperipossa.</p>
+<p>Håret spretade åt alla håll. Klänningen var full av kanel och ena skon hade försvunnit.</p>
+<p>Hon tittade på barnen.</p>
+<p>Barnen tittade på henne.</p>
+<p>"Ge mig trollstaven", sa hon.</p>
+<p>Maja skakade på huvudet.</p>
+<p>"Först visar du oss vägen hem."</p>
+<p>Pomperipossa suckade.</p>
+<p>"Följ med då."</p>
+<p>De vandrade genom skogen tills träden började glesna. Snart såg Maja och Leo ljusen från sin lilla by.</p>
+<p>"Nu hittar ni själva", muttrade Pomperipossa.</p>
+<p>Maja räckte tillbaka trollstaven.</p>
+<p>Pomperipossa tog den.</p>
+<p>Sedan stod hon tyst en stund.</p>
+<p>"Ni..."</p>
+<p>"Ja?"</p>
+<p>"Ni behöver inte berätta för någon om kanelbullen."</p>
+<p>Leo log.</p>
+<p>"Vi får se."</p>
+<p>Pomperipossa blängde på honom.</p>
+<p>Sedan vände hon sig om och försvann mellan träden.</p>
+<p>Maja och Leo sprang hem.</p>
+<p>Och Pomperipossa?</p>
+<p>Hon höll faktiskt sitt löfte.</p>
+<p>Nästan.</p>
+<p>För än i dag säger människor som går genom den där skogen att de ibland ser en gammal trollpacka mellan träden.</p>
+<p>Hon gör inte längre barn till paddor.</p>
+<p>Hon förvandlar inte vuxna till stenar.</p>
+<p>Och hundarna får vara helt ifred.</p>
+<p>Men om någon råkar kalla henne för Kanelbullen...</p>
+<p>...då är det bäst att springa.</p>
+<p class="the-end">Slut.</p>
+    </article>
+
+    <p class="notice">
+      Knappen Läs högt använder den svenska röst som finns installerad i webbläsaren.
+    </p>
+
+    <footer>
+      Andreas Nyberg
+    </footer>
+  </main>
+
+  <script>
+    const button = document.getElementById("speakButton");
+    const story = document.getElementById("sagan");
+    let speaking = false;
+
+    function getSwedishVoice() {
+      const voices = window.speechSynthesis.getVoices();
+      return voices.find(v => v.lang && v.lang.toLowerCase().startsWith("sv")) || voices[0];
+    }
+
+    button.addEventListener("click", () => {
+      if (!("speechSynthesis" in window)) {
+        button.textContent = "Uppläsning stöds inte";
+        button.disabled = true;
+        return;
+      }
+
+      if (speaking) {
+        window.speechSynthesis.cancel();
+        speaking = false;
+        button.textContent = "Läs högt";
+        return;
+      }
+
+      const utterance = new SpeechSynthesisUtterance(story.innerText);
+      utterance.lang = "sv-SE";
+      utterance.rate = 0.92;
+      utterance.pitch = 1;
+      const voice = getSwedishVoice();
+      if (voice) utterance.voice = voice;
+
+      utterance.onend = () => {
+        speaking = false;
+        button.textContent = "Läs högt";
+      };
+
+      speaking = true;
+      button.textContent = "Stoppa uppläsning";
+      window.speechSynthesis.speak(utterance);
+    });
+
+    window.addEventListener("beforeunload", () => {
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    });
+  </script>
+</body>
+</html>
