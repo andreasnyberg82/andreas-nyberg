@@ -5,6 +5,11 @@
 # Files intentionally served: index.html, andreas.jpeg, andreas-nyberg-cv.pdf,
 # og-image.png, apple-touch-icon.png, favicon.svg
 #
+# Also served: pomperipossa/ (unlisted story page for family, noindex, not
+# linked from index.html). Everything in that folder is public by URL.
+# The mp3s there are served through worker.js, which adds byte-range
+# support that iOS Safari needs. worker.js itself is never served.
+#
 # When adding a working file to the repo root, add it here too.
 
 .git
@@ -22,6 +27,7 @@ node_modules
 node_modules/**
 *.md
 wrangler.jsonc
+worker.js
 
 # everything retired lives here
 archive
