@@ -36,21 +36,54 @@
     }
     .hero {
       display: grid;
-      grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
-      gap: 54px;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
+      gap: 48px;
       align-items: center;
-      min-height: 86vh;
+      min-height: 72vh;
     }
     .cover-wrap {
       position: relative;
     }
     .cover-wrap picture { display: block; }
-    .cover {
+    .hero-video {
       display: block;
       width: 100%;
-      border-radius: 28px;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 24px;
+      background: #0a0d0b;
       box-shadow: var(--shadow);
       border: 1px solid rgba(255,255,255,.12);
+      cursor: pointer;
+    }
+    .sound-toggle {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      padding: 10px 15px;
+      background: rgba(10,13,11,.72);
+      color: #f8f2e8;
+      border: 1px solid rgba(255,255,255,.16);
+      font: 700 12px/1 system-ui, sans-serif;
+      backdrop-filter: blur(4px);
+    }
+    .teaser-caption {
+      margin: 14px 2px 0;
+      color: #8d9a90;
+      font: 500 12px/1.5 system-ui, sans-serif;
+    }
+    /* the cover art now opens the story, as a book plate */
+    .plate {
+      margin: 4px auto 44px;
+      width: min(480px, 100%);
+    }
+    .plate picture { display: block; }
+    .plate img {
+      display: block;
+      width: 100%;
+      border-radius: 18px;
+      box-shadow: 0 18px 44px rgba(48,37,29,.28);
+      cursor: pointer;
     }
     .hero-copy { container-type: inline-size; }
     .eyebrow {
@@ -171,45 +204,6 @@
     }
     .cover { cursor: pointer; }
     .story .magic { cursor: pointer; user-select: none; }
-    .lightbox {
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: rgba(6,9,7,.88);
-      backdrop-filter: blur(6px);
-    }
-    .lightbox[open] { display: flex; }
-    .lightbox-inner {
-      position: relative;
-      width: min(960px, 100%);
-    }
-    .lightbox video {
-      display: block;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      border-radius: 18px;
-      background: #000;
-      box-shadow: var(--shadow);
-    }
-    .lightbox-close {
-      position: absolute;
-      top: -14px;
-      right: -10px;
-      width: 42px;
-      height: 42px;
-      padding: 0;
-      border-radius: 999px;
-      background: var(--gold);
-      color: #2b2014;
-      font: 700 18px/1 system-ui, sans-serif;
-    }
-    @media (max-width: 820px) {
-      .lightbox-close { top: -52px; right: 0; }
-    }
     .story {
       width: min(760px, 100%);
       margin: 90px auto 0;
@@ -278,27 +272,25 @@
         min-height: auto;
       }
       .cover-wrap { order: 2; }
+      .hero { min-height: auto; }
       .hero-copy { order: 1; padding: 28px 4px 0; }
       h1 { max-width: 8ch; }
       .story { margin-top: 56px; }
     }
-    @media (prefers-reduced-motion: no-preference) {
-      .cover { animation: float 7s ease-in-out infinite; }
-      @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-8px); }
-      }
-    }
+
   </style>
 </head>
 <body>
   <main class="shell">
     <section class="hero" aria-labelledby="page-title">
       <div class="cover-wrap">
-        <picture>
-          <source srcset="cover.webp" type="image/webp">
-          <img class="cover" src="cover.png" width="1254" height="1254" alt="Omslag till Pomperipossa i skogen">
-        </picture>
+        <video class="hero-video" id="teaserVideo" poster="teaser-poster.webp"
+               autoplay muted loop playsinline preload="metadata"
+               aria-label="Smygtitt ur Pomperipossa i skogen">
+          <source src="teaser.mp4" type="video/mp4">
+        </video>
+        <button class="secondary sound-toggle" id="soundToggle" type="button">🔇 Sätt på ljudet</button>
+        <p class="teaser-caption">Smygtitt, 10 sekunder. Tryck för ljud.</p>
       </div>
 
       <div class="hero-copy">
@@ -333,7 +325,6 @@
 
         <div class="actions">
           <a class="button secondary" href="#sagan">Läs sagan själv</a>
-          <button class="secondary" id="teaserButton" type="button">▶ Smygtitt, 10 sek</button>
         </div>
       </div>
     </section>
@@ -341,6 +332,12 @@
     <article class="story" id="sagan">
       <h2>Pomperipossa i skogen</h2>
       <p class="byline">En saga läst av Andreas Nyberg</p>
+      <figure class="plate">
+        <picture>
+          <source srcset="cover.webp" type="image/webp">
+          <img class="cover" src="cover.png" width="1254" height="1254" alt="Omslag till Pomperipossa i skogen">
+        </picture>
+      </figure>
       <p>Barnen stod alldeles stilla.</p>
 <p>Pomperipossa kisade på dem med sina små svarta ögon.</p>
 <p>"Kom in, kom in", sa hon med sin allra vänligaste röst.</p>
@@ -462,16 +459,6 @@
       Andreas Nyberg
     </footer>
   </main>
-
-  <div class="lightbox" id="teaserBox" role="dialog" aria-modal="true" aria-label="Smygtitt">
-    <div class="lightbox-inner">
-      <button class="lightbox-close" id="teaserClose" type="button" aria-label="Stäng smygtitten">✕</button>
-      <video id="teaserVideo" playsinline preload="none" poster="teaser-poster.webp" controls>
-        <source src="teaser.mp4" type="video/mp4">
-        Din webbläsare kan tyvärr inte spela upp video.
-      </video>
-    </div>
-  </div>
 
   <script>
     const audio = document.getElementById("storyAudio");
@@ -617,40 +604,46 @@
       }
     });
 
-    // smygtitt: the 10 second teaser, in a lightbox so nothing shifts
-    const teaserButton = document.getElementById("teaserButton");
-    const teaserBox = document.getElementById("teaserBox");
+    // hero teaser: loops silently, one tap gives it sound
     const teaserVideo = document.getElementById("teaserVideo");
-    const teaserClose = document.getElementById("teaserClose");
+    const soundToggle = document.getElementById("soundToggle");
+    const caption = document.querySelector(".teaser-caption");
 
-    function openTeaser() {
-      audio.pause();
-      teaserBox.setAttribute("open", "");
-      document.body.style.overflow = "hidden";
-      teaserVideo.currentTime = 0;
+    function silence() {
+      teaserVideo.muted = true;
+      teaserVideo.loop = true;
+      soundToggle.textContent = "🔇 Sätt på ljudet";
+      caption.textContent = "Smygtitt, 10 sekunder. Tryck för ljud.";
       teaserVideo.play().catch(() => {});
-      teaserClose.focus();
     }
 
-    function closeTeaser() {
-      teaserVideo.pause();
-      teaserBox.removeAttribute("open");
-      document.body.style.overflow = "";
-      teaserButton.focus();
+    function unsilence() {
+      audio.pause();
+      teaserVideo.muted = false;
+      teaserVideo.loop = false;
+      teaserVideo.currentTime = 0;
+      soundToggle.textContent = "🔊 Stäng av ljudet";
+      caption.textContent = "Smygtitt, 10 sekunder, med ljud.";
+      teaserVideo.play().catch(silence);
     }
 
-    teaserButton.addEventListener("click", openTeaser);
-    teaserClose.addEventListener("click", closeTeaser);
-    teaserBox.addEventListener("click", (event) => {
-      if (event.target === teaserBox) closeTeaser();
-    });
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && teaserBox.hasAttribute("open")) closeTeaser();
-    });
+    function toggleSound() {
+      if (teaserVideo.muted) unsilence(); else silence();
+    }
+
+    soundToggle.addEventListener("click", toggleSound);
+    teaserVideo.addEventListener("click", toggleSound);
+
+    // once it has said its piece, back to the silent loop
     teaserVideo.addEventListener("ended", () => {
-      poffFrom(teaserVideo, 18);
+      poffFrom(teaserVideo, 14);
+      silence();
     });
-    teaserVideo.addEventListener("play", () => audio.pause());
+
+    // narration and teaser never talk over each other
+    audio.addEventListener("play", () => {
+      if (!teaserVideo.muted) silence();
+    });
   </script>
 </body>
 </html>
